@@ -1,8 +1,9 @@
-
-
+import { runInThisContext } from 'vm';
 
 class AppCtrl {
-    static get $inject() { return ['$state', '$rootScope', '$scope', '$http', 'dashboardCropServive', 'cropNavTaskList', '$sce', '$q', '$location', '$anchorScroll'] }
+    static get $inject() {
+        return ['$state', '$rootScope', '$scope', '$http', 'dashboardCropServive', 'cropNavTaskList', '$sce', '$q', '$location', '$anchorScroll'];
+    }
     constructor($state, $rootScope, $scope, $http, dashboardCropServive, cropNavTaskList, $sce, $q, $location, $anchorScroll) {
         let vm = this;
         // vm.meaudropDown = meaudropDown;
@@ -15,6 +16,7 @@ class AppCtrl {
         vm.$anchorScroll = $anchorScroll;
         $rootScope.loaderLoading = true;
         init();
+
         function init() {
             // 初始化页面模板
             vm.cropNavTaskList = cropNavTaskList;
@@ -27,11 +29,11 @@ class AppCtrl {
                     } else {
                         initTemplate(response);
                     }
-                })
-        };
+                });
+        }
 
         function initTemplate(response) {
-            console.log(response)
+            console.log(response);
             $rootScope.loaderLoading = false;
             vm.data = response.data;
             vm.noData = false;
@@ -74,8 +76,8 @@ class AppCtrl {
             // 商品赋码
             vm.commityCode = vm.data.commodityCode.data;
             angular.forEach(vm.commityCode, function (item) {
-                item.text = `https://www.fmbiz.com.cn:10220?code=${item.codeHistoryCode}`
-            })
+                item.text = `https://www.fmbiz.com.cn:10220?code=${item.codeHistoryCode}`;
+            });
             vm.evaluateData = vm.data.evaluateData;
             dataInit(vm.evaluateData, initEval);
             vm.circulationData = vm.data.circulationData;
@@ -83,6 +85,7 @@ class AppCtrl {
             return;
 
         }
+
         function dataInit(arr, callback) {
             var defer = $q.defer();
             if (arr) {
@@ -139,17 +142,47 @@ class AppCtrl {
                         delete data.codeInfo;
                         data.text = `https://www.fmbiz.com.cn:10220?code=${data.codeHistoryCode}`;
                         return data;
-                    })
+                    });
                     return item;
-                })
+                });
             }
             vm.putCodeList = arr.slice(0, 10);
 
             return vm.putCodeList;
         }
 
+        // 控制图片
+
+
+
+        // filter 过滤数组
+        vm.myFilter = {};
+        vm.noMore = {};
+        // vm.changeI = null;
+        this.initNum = {
+            init: 10,
+            landNum: 10,
+            decNum: 10,
+            sowNum: 10,
+            plantNum: 10,
+            putNum: 10
+        };
+        vm.keyWords = ['land', 'dec', 'sow', 'plant', 'putcode'];
+        vm.keyWords.map((item) => {
+            vm.myFilter[item] = function (data, index) {
+                // 默认显示10条检测数据
+                if (index <= 9) {
+                    return data;
+                }
+            };
+
+            // 控制暂无更多数据
+            vm.noMore[item] = false;
+            return item;
+        });
+
     }
-    meaudropDown(e){
+    meaudropDown(e) {
         this.meauClip = !this.meauClip;
         e.stopPropagation();
     }
@@ -167,10 +200,45 @@ class AppCtrl {
     clickAll() {
         this.meauClip = true;
     }
+    dropDown(arrAll, hot) {
+        if (!angular.isUndefined(arrAll) && arrAll.length <= 10) {
+            return false;
+        }
+        // 这里这是为了控制每次 ++ 的时候变量
+        if (hot === 'dec') {
+            this.changeI = this.initNum.landNum += this.initNum.init;
+        } else if (hot === 'land') {
+            this.changeI = this.initNum.decNum += this.initNum.init;
+        } else if (hot === 'sow') {
+            this.changeI = this.initNum.sowNum += this.initNum.init;
+        } else if (hot === 'plant') {
+            this.changeI = this.initNum.plantNum += this.initNum.init;
+        } else if (hot === 'putcode') {
+            this.changeI = this.initNum.putNum += this.initNum.init;
+        }
+
+        let _this = this;
+
+        this.myFilter[hot] = function (data, index, arr) {
+            // 默认显示10条检测数据
+            if (_this.changeI > arr.length) {
+                // 显示暂无更多数据
+                _this.noMore[hot] = true;
+                return data;
+            }
+            if (_this.changeI > index) {
+                // 如果小于本身的index 则让全部返回 每次会 +  10条
+                return arr[index];
+            }
+        };
+
+    }
 }
 
 // function AppCtrl(){
 //     console.log('appCtrl')
 // }
 // module.exports  = AppCtrl;
-export { AppCtrl }
+export {
+    AppCtrl
+};

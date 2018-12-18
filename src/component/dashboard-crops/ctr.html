@@ -1,6 +1,5 @@
-<div class="dashboardCrops-file" ng-click="$ctrl.first()">
-    <img src="img/people1.jpg" alt="">
-    <div class="prod-container" ng-click="$ctrl.clickAll($event)" ng-if="false">
+<div class="dashboardCrops-file">
+    <div class="prod-container" ng-click="$ctrl.clickAll($event)">
         <!-- <no-data ng-if="$ctrl.noData"></no-data> -->
         <no-barcode ng-if="$ctrl.noData"></no-barcode>
         <div class="anchor" id="navbar-example" ng-if="!loaderLoading && !$ctrl.noData">
@@ -8,7 +7,7 @@
                 <li class="but" ng-repeat="item in $ctrl.cropNavTaskList track by $index" ng-class="{'active': $index === $ctrl.tabIndex }"
                     ng-click="$ctrl.anchorClick($event, item, $index);">
                     <a href="#{{item.type}}"
-                        >{{item.name}}</a> 
+                        ">{{item.name}}</a> 
                  </li>
             </ul>
             <span class="
@@ -27,6 +26,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 <!-- 种植百科 -->
@@ -76,15 +76,15 @@
                     <img class="img-responsive" alt="" ng-src="{{$ctrl.companyPlant.introductionItem.imgUrl + '?withoutwater=true'}}" >
                     <p class="enterprise-list-name" ng-bind="$ctrl.companyPlant.introductionItem.name"> <span></span> </p>
                     <p> <span ng-bind="$ctrl.companyPlant.introductionItem.xinghao"></span></p>
-                    <p><span ng-bind="$ctrl.companyPlant.introductionItem.address"></span> </p>
-                    <p> <span>注册时间 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.registeredtime"></label></p>
-                    <p> <span>注册资本 : </span> <label ng-bind="$ctrl.companyPlant.introductionItem.registeredcapital"></label></p>
-                    <p> <span>企业法人 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.enterpriseMan"> </label> </p>
-                    <p> <span>英文名称 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.englishnames"></label></p>
-                    <p> <span>注册地址 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.registeredaddress"></label></p>
+                    <p ng-if="$ctrl.companyPlant.introductionItem.address"><span ng-bind="$ctrl.companyPlant.introductionItem.address"></span> </p>
+                    <p> <span>注册时间 :</span><label ng-bind="$ctrl.companyPlant.introductionItem.registeredtime"></label></p>
+                    <p> <span>注册资本 : </span><label ng-bind="$ctrl.companyPlant.introductionItem.registeredcapital"></label></p>
+                    <p> <span>企业法人 :</span><label ng-bind="$ctrl.companyPlant.introductionItem.enterpriseMan"> </label> </p>
+                    <p ng-if="$ctrl.companyPlant.introductionItem.englishnames"> <span>英文名称 :</span><label ng-bind="$ctrl.companyPlant.introductionItem.englishnames"></label></p>
+                    <p> <span>注册地址 :</span><label ng-bind="$ctrl.companyPlant.introductionItem.registeredaddress"></label></p>
                     <!-- <p><span>开户银行 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.account"></label></p>
                     <p> <span>银行账号 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.bankaccount"></label></p> -->
-                    <p> <span>登记机关 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.registration"></label></p>
+                    <p> <span>登记机关 :</span><label ng-bind="$ctrl.companyPlant.introductionItem.registration"></label></p>
                     <p ng-bind="$ctrl.companyPlant.introductionItem.companyaddress">山东省 潍坊市 峡山区 高新项目区峡山农产品综合交易物流中心2号楼</p>
                 </div>
             </div>
@@ -195,32 +195,39 @@
                         <div class="bottom-dashed-1px font-12">DTX5000 | 有机质 600公斤 3.60元/公斤</div> -->
                         <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{item.landLevelings.description}}</div>
                         <div class="smooththings-list-img">
-                            <img ng-repeat="img in item.landLevelings.images track by $index" src="{{img}}" data-toggle="lightbox"
+                            <img ng-repeat="img in item.landLevelings.images track by $index" src="{{img + '?withoutwater=true'}}" data-toggle="lightbox"
                                 light-box data-remote="{{img}}?size=original" alt=""  ng-click="$ctrl.viewPicture(item.landLevelings.images, $event)"  err-src="img/default-user.png">
                         </div>
     
                         <div class="crop-flat-land" ng-if="item.projectData && item.projectData.length > 0">
                             <section class="">
-                                    <ul class="prod-list">
+                                    <ul class="prod-list" style="margin-bottom: 0">
                                         <li class="prod-list-item bg-white">
                                             <h5 style="width: 20%">事务名称</h5>
                                             <h5 style="width: 22%">属性名称</h5>
                                             <h5 style="width: 25%">属性值阙</h5>
                                             <h5 style="width: 24%">标签</h5>
                                         </li>
-                                        <li class="prod-list-item bg-white" ng-repeat="data in item.projectData | limitTo: 12">
+                                        <li class="prod-list-item bg-white" ng-repeat="data in item.projectData | filter:$ctrl.myFilter['land']">
                                             <span class="td-over-label" style="width: 20%">{{data.projectName}}</span>
                                             <span class="td-over-label" style="width: 22%">{{data.attributeName || 'ph值'}}</span>
                                             <span class="text-right td-over-label" style="width: 25%">{{data.attributeValue}}</span>
                                             <span class="text-right td-over-label" style="width: 24%">{{data.label}}</span>
+                                            
                                         </li>
-                                        <li class="load-mores bg-white" ng-click="$ctrl.dropDown()" ng-if="$ctrl.PageData.automaticDetection.storageDetectionValue.length > 10 && $ctrl.pageNumber !== $ctrl.viewmore">
-                                            <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDown()"></i> -->
+                                        <li class="load-mores bg-white" ng-click="$ctrl.dropDown(item.projectData, 'land', 'ld')" ng-if="item.projectData.length > 10 && !$ctrl.noMore['land']">
+                                            
                                             <span>查看更多</span>
+                                        </li>
+
+                                        <li class="load-mores bg-white" ng-click="$ctrl.dropDowns(item.projectData)" ng-if="$ctrl.noMore['land']">
+                                            <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDowns()"></i> -->
+                                            <span>暂无更多数据</span>
                                         </li>
                                     </ul>
                              </section>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -278,7 +285,7 @@
     
                         <div class="space-box-con">
                             <span>fmbox-demo34</span>
-                            <span>北淩家园有机农场</span>
+                            <span>新庄镇草莓种植</span>
                         </div>
                     </li>
                     <li>
@@ -297,7 +304,7 @@
                         </div>
                         <div class="space-box-con">
                             <span>1#摄像头</span>
-                            <span>北淩家园有机农场</span>
+                            <span>宿迁市宿豫区新庄镇</span>
                         </div>
                     </li>
                     <li>
@@ -393,7 +400,6 @@
                                 </span>
                             </div>
                             <!-- <img src="img/yuliang.png" style="width: 100%;height: 100%" alt=""> -->
-                             
                             <div fm-equipment-chat equipment-data='chartItem' style="width: 100%;"></div>
                             <!-- <div class="" style="width: 100%;" >
                                     <div fm-echart e-data="chartItem" style="height: 200px"  width="100%" ng-if="$ctrl.newOpionsChat"></div>
@@ -440,28 +446,32 @@
                                 <div class="bottom-dashed-1px font-12">DTX5000 | 有机质 600公斤 3.60元/公斤</div> -->
                                 <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{item.landLevelings.description}}</div>
                                 <div class="smooththings-list-img">
-                                    <img ng-repeat="img in item.landLevelings.images track by $index" src="{{img}}" data-toggle="lightbox"
+                                    <img ng-repeat="img in item.landLevelings.images track by $index" src="{{img + '?withoutwater=true'}}" data-toggle="lightbox"
                                         light-box data-remote="{{img}}?size=original" alt=""  ng-click="$ctrl.viewPicture(item.landLevelings.images, $event)" err-src="angularjs/assets/images/wisdomAgriculture/defaultImg_green.jpg">
                                 </div>
             
                                 <div class="crop-flat-land" ng-if="item.projectData && item.projectData.length > 0">
                                     <section class="">
-                                            <ul class="prod-list">
+                                            <ul class="prod-list" style='margin-bottom: 0'>
                                                 <li class="prod-list-item bg-white">
                                                     <h5 style="width: 20%">事务名称</h5>
                                                     <h5 style="width: 22%">属性名称</h5>
                                                     <h5 style="width: 25%">属性值阙</h5>
                                                     <h5 style="width: 24%">标签</h5>
                                                 </li>
-                                                <li class="prod-list-item bg-white" ng-repeat="data in item.projectData | limitTo: 12">
+                                                <li class="prod-list-item bg-white" ng-repeat="data in item.projectData | filter: $ctrl.myFilter['sow']">
                                                     <span class="td-over-label" style="width: 20%">{{data.projectName}}</span>
                                                     <span class="td-over-label" style="width: 22%">{{data.attributeName || 'ph值'}}</span>
                                                     <span class="text-right td-over-label" style="width: 25%">{{data.attributeValue}}</span>
                                                     <span class="text-right td-over-label" style="width: 24%">{{data.label}}</span>
                                                 </li>
-                                                <li class="load-mores bg-white" ng-click="$ctrl.dropDown()" ng-if="$ctrl.PageData.automaticDetection.storageDetectionValue.length > 10 && $ctrl.pageNumber !== $ctrl.viewmore">
-                                                    <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDown()"></i> -->
+                                                <li class="load-mores bg-white" ng-click="$ctrl.dropDown(item.projectData, 'sow')" ng-if="item.projectData.length > 10 && !$ctrl.noMore['sow']">
+                                                    
                                                     <span>查看更多</span>
+                                                </li>
+                                                <li class="load-mores bg-white"  ng-if="$ctrl.noMore['sow']">
+                                                    <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDowns()"></i> -->
+                                                    <span>暂无更多数据</span>
                                                 </li>
                                             </ul>
                                      </section>
@@ -518,15 +528,19 @@
                                             <h5 style="width: 25%">属性值阙</h5>
                                             <h5 style="width: 24%">标签</h5>
                                         </li>
-                                        <li class="prod-list-item bg-white" ng-repeat="data in item.projectData | limitTo: 12">
+                                        <li class="prod-list-item bg-white" ng-repeat="data in item.projectData | filter: $ctrl.myFilter['plant']">
                                             <span class="td-over-label" style="width: 20%">{{data.projectName}}</span>
                                             <span class="td-over-label" style="width: 22%">{{data.attributeName || 'ph值'}}</span>
                                             <span class="text-right td-over-label" style="width: 25%">{{data.attributeValue}}</span>
                                             <span class="text-right td-over-label" style="width: 24%">{{data.label}}</span>
                                         </li>
-                                        <li class="load-mores bg-white" ng-click="$ctrl.dropDown()" ng-if="$ctrl.PageData.automaticDetection.storageDetectionValue.length > 10 && $ctrl.pageNumber !== $ctrl.viewmore">
-                                            <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDown()"></i> -->
+                                        <li class="load-mores bg-white" ng-click="$ctrl.dropDown(item.projectData, 'plant')" ng-if="item.projectData.length > 10 && !$ctrl.noMore['plant']">
+                                            
                                             <span>查看更多</span>
+                                        </li>
+                                        <li class="load-mores bg-white"  ng-if="$ctrl.noMore['plant']">
+                                            <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDowns()"></i> -->
+                                            <span>暂无更多数据</span>
                                         </li>
                                     </ul>
                              </section>
@@ -565,7 +579,7 @@
                                 <span>编号:</span>
                                 <span>{{item.detectionCode}}</span>
                             </div>
-                            <div class="bottom-dashed-1px">
+                            <div class="bottom-dashed-1px" ng-if="item.detectionPersonName">
                                 <span>检测人:</span>
                                 <span>{{item.detectionPersonName || '张志军'}}</span>
                             </div>
@@ -579,18 +593,30 @@
                             </div>
                             <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{$ctrl.laboratoryData.detectionItem.description}}</div>
                             <div class="smooththings-list-img padding-bottom-10">
-                                <img ng-repeat="item in $ctrl.laboratoryData.detectionItem.images track by $index" src="{{item}}"
-                                    data-toggle="lightbox" light-box data-remote="{{item}}" ng-click="$ctrl.viewPicture($ctrl.laboratoryData.detectionItem.images, $event)"  alt="">
+                                <img ng-repeat="img in item.imgArr[0].images track by $index" src="{{img+'?withoutwater=true'}}"
+                                    data-toggle="lightbox" light-box data-remote="{{img}}" ng-click="$ctrl.viewPicture(item.imgArr[0].images, $event)"  alt="">
                             </div>
                             <div class="table-responsive no-margin" style="margin: 0">
                                 <table class="table no-margin table-condensed  table-striped">
-                                    <tr ng-repeat="obj in item.detectionInfo | limitTo: 10 track by $index">
+                                    <tr ng-repeat="obj in item.detectionInfo | filter: $ctrl.myFilter['dec']">
                                         <td>{{obj.programName}}</td>
                                         <td>{{obj.standardValues}}</td>
                                         <td>{{obj.programDetailName}}</td>
                                         <td class="col-md-4">{{obj.methods}}</td>
                                     </tr>
+
+                                    
                                 </table>
+                                <div class="load-mores bg-white" ng-click="$ctrl.dropDown(item.detectionInfo, 'dec')" ng-if="item.detectionInfo.length > 10 && !$ctrl.noMore['dec']">
+                                    
+                                    <span>查看更多</span>
+                                </div>
+
+                                <div class="load-mores bg-white" ng-click="$ctrl.dropDowns(item.projectData, 'dec')" ng-if="$ctrl.noMore['dec']">
+                                    <!-- <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDowns()"></i> -->
+                                    <span>暂无更多数据</span>
+                                     <!-- <button><可收回</button> -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -677,8 +703,8 @@
                 <!-- ng-bind="html" -->
                 <div class="commodity-list" ng-if="$ctrl.putCodeList">
                     <!-- <span>{{item.info}}</span> -->
-                    <ul class="commodity-list-img" ng-repeat="code in $ctrl.putCodeList | limitTo: 3 track by $index">
-                        <li class="col-md-2 col-5 col-xs-2 padding-0" ng-repeat="item in code.codeInfo | limitTo: 4 track by $index">
+                    <ul class="commodity-list-img margin-top-5" ng-repeat="code in $ctrl.putCodeList | limitTo: 3 track by $index">
+                        <li class="col-md-2 col-xs-2 padding-0" ng-repeat="item in code.codeInfo | limitTo: 4 track by $index">
                             <!-- <img ng-src="{{item}}" alt="" class="brand-crops-text " ng-click="$ctrl.viewPicture($ctrl.putCode, $event)"
                             err-src="images/jiang_img/1.png"> -->
                             <div class="qccode-container" >
@@ -691,7 +717,7 @@
                                     <div>{{item.inboundTypeName}}</div>
                                     <div>{{item.inWareTime}}</div>
                                     
-                                    <div qrcode-make options="item"
+                                    <div canvas-qrcode-make  options="item"
                                         class="qcode-style" ng-if="item" ng-click="$ctrl.viewPicture(item.text, $event)">
                                     </div>
     
@@ -716,12 +742,12 @@
             <no-data text-str="暂无商品码" data="$ctrl.commityCode" class="smooththingsData-margin"></no-data>
             <div class="introduce-con">
                 <!-- ng-bind="html" -->
-                <div class="commodity-list" >
+                <div class="commodity-list" ng-class="{'commityCode-code-bot': $ctrl.commityCode.length > 10}">
                     <!-- <span>{{cp.info}}</span> -->
-                    <ul class="commodity-list-img" ng-if="$ctrl.commityCode">
-                        <li ng-repeat="item in $ctrl.commityCode | limitTo: 20  track by $index" class="col-md-2  col-5 col-xs-2 padding-0">
-                            <div class="qccode-container" >
-                                <div class="qccode-list" >
+                    <ul class="commodity-list-img margin-top-5" style="margin-bottom:5px">
+                        <li ng-repeat="item in $ctrl.commityCode | filter: $ctrl.myFilter['putcode']" class="col-md-2 col-xs-2 padding-0 put-code">
+                            <div class="qccode-container">
+                                <div class="qccode-list">
                                     <div>{{item.productName}}</div>
                                     <div>{{item.levelName}} <label>{{item.detction}}</label></div>
                                     <div>{{item.address}}</div>
@@ -729,14 +755,21 @@
                                     <div>{{item.productCode}}</div>
                                     <div>{{item.harvestTime || '2018-10-09: 10:13'}}</div>
                                     <div>{{item.landName}}</div>
-                                    <div qrcode-make options="item"
+                                    <div canvas-qrcode-make options="item"
                                         class="qcode-style" ng-if="item" ng-click="$ctrl.viewPicture(item.text, $event)">
                                     </div>
     
                                 </div>
                             </div>
                         </li>
-    
+                        <li class="load-mores bg-white put-code-with" style="width: 100%" ng-click="$ctrl.dropDown($ctrl.commityCode, 'putcode')" ng-if="$ctrl.commityCode.length > 10 && !$ctrl.noMore['putcode']">
+                            
+                            <span>查看更多</span>
+                        </li>
+                        <li class="load-mores bg-white put-code-with" style="width: 100%"  ng-if="$ctrl.noMore['putcode']">
+                            <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDowns()"></i> -->
+                            <span>暂无更多数据</span>
+                        </li>
                     </ul>
                 </div>
     
