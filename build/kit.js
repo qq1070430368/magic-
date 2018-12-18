@@ -12,11 +12,32 @@ const kit = {
     checkNodeVer: checkNodeVer,
     checkNpm: checkNpm,
     log: log,
+    getCliArgs: getCliArgsFactory(),
     getErrors: getErrors,
     getWatcherConfig: getWatcherConfig,
     getUglifyConfig: getUglifyConfig,
+    isProduction: isProduction
 };
 
+
+/**
+ * 获取 "命令行" 参数
+ * @returns {() => }
+ */
+function getCliArgsFactory() {
+    var
+        minimist = require("minimist"),
+        cliAgr;
+    return (isFore) => {
+        if (!cliAgr && !isFore) {
+            cliAgr = cliAgr || minimist(process.argv.slice(2), {
+                default: {}
+            });
+            delete cliAgr._;
+        }
+        return cliAgr;
+    };
+}
 /**
  * 检测 Node 版本
  * @returns { Boolean } 是否为稳定版
@@ -199,6 +220,15 @@ function getErrors(error) {
     shell.echo('');
 }
 
+
+/**
+ * 是否为 "产品级" 构建模式
+ * @returns {boolean}
+ */
+function isProduction() {
+    var cliArgs = kit.getCliArgs();
+    return !!(cliArgs.dev || true === cliArgs.production);
+}
 /**
  * print something
  */

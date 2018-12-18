@@ -10,7 +10,8 @@ const
     // shell = require('shelljs'),
     // sourceMaps = require('gulp-sourcemaps'),
     utile = require('gulp-util'),
-    imageMin = require('gulp-imagemin');
+    imageMin = require('gulp-imagemin'),
+    uglify = require('uglifyjs-webpack-plugin');
 
 const kit = require('./kit');
 
@@ -37,7 +38,11 @@ const
     concatLib = ['lib/jquery/jquery.min.js', 'lib/bootstrap/bootstrap.min.js', 'lib/angular.js', 'lib/angular-ui-router.min.js',
         'lib/ECharts/echarts-3.8.0.min.js', 'lib/PhotoSwipe/photoswipe.min.js', 'lib/PhotoSwipe/photoswipe-ui-default.min.js', 'lib/qcode-2/qrcode.min.js', 'lib/swiperSlide/swipeslider.min.js'];
 
+let webpackConfig = require('./webpack.config');
 
+if(kit.isProduction()){
+    webpackConfig.plugins.push(new uglify());
+}
 
 // 清理dist目录线上代码
 function clear(cb) {
@@ -138,7 +143,7 @@ function buildJs() {
             //     loadMaps: true
             // }))
             .pipe(webpack(
-                require('./webpack.config'), null, (err, state) => {
+                webpackConfig, null, (err, state) => {
                     if (err) {
                         return console.log('webpack 执行出错: ', err, state);
                     }

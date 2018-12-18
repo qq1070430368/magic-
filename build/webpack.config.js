@@ -1,8 +1,7 @@
 const
     webpackHtml = require('html-webpack-plugin'),
     extractTextPlugin = require('extract-text-webpack-plugin'),
-    uglify = require('uglifyjs-webpack-plugin');
-
+    kit = require('./kit');
 
 
 module.exports = {
@@ -82,12 +81,15 @@ module.exports = {
             filename: 'index.html',
             template: 'src/index.html',
             cache: false,
-            hash: true
+            hash: true,
+            environment: process.env.NODE_ENV
         }),
         // css 从js中抽离出来
         new extractTextPlugin('css/style.css'),
         // 使用webpack插件压缩js
-        new uglify()
+        // kit.isProduction() ?  new uglify(): new extractTextPlugin()
     ],
+   
+    
 
 };
