@@ -563,6 +563,11 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
     vm.viewPicture = viewPicture;
 
     function viewPicture(images) {
+        var pullImg = [];
+            if (typeof images === 'string') {
+                pullImg.push(images);
+                images = pullImg;
+            }
         $rootScope.items = images.map(function (item) {
             var imgSrc = item + '?size=original';
             if (item instanceof Object) {

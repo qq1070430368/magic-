@@ -21,7 +21,7 @@ class LoadController {
             url: '/app',
             templateUrl: './component/dashboard-crops/ctr.html',
             controller: 'dashboard_crop',
-            controllerAs: '$ctrl', 
+            controllerAs: '$ctrl',
         };
         this.goodsProduct = {
             url: '/app',

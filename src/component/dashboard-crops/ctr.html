@@ -195,8 +195,7 @@
                         <div class="bottom-dashed-1px font-12">DTX5000 | 有机质 600公斤 3.60元/公斤</div> -->
                         <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{item.landLevelings.description}}</div>
                         <div class="smooththings-list-img">
-                            <img ng-repeat="img in item.landLevelings.images track by $index" src="{{img + '?withoutwater=true'}}" data-toggle="lightbox"
-                                light-box data-remote="{{img}}?size=original" alt=""  ng-click="$ctrl.viewPicture(item.landLevelings.images, $event)"  err-src="img/default-user.png">
+                            <img ng-repeat="img in item.landLevelings.images track by $index" ng-src="{{img + '?withoutwater=true'}}"  alt=""  ng-click="$ctrl.viewPicture(item.landLevelings.images, $event)"  err-src="img/default-user.png">
                         </div>
     
                         <div class="crop-flat-land" ng-if="item.projectData && item.projectData.length > 0">
@@ -446,8 +445,7 @@
                                 <div class="bottom-dashed-1px font-12">DTX5000 | 有机质 600公斤 3.60元/公斤</div> -->
                                 <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{item.landLevelings.description}}</div>
                                 <div class="smooththings-list-img">
-                                    <img ng-repeat="img in item.landLevelings.images track by $index" src="{{img + '?withoutwater=true'}}" data-toggle="lightbox"
-                                        light-box data-remote="{{img}}?size=original" alt=""  ng-click="$ctrl.viewPicture(item.landLevelings.images, $event)" err-src="angularjs/assets/images/wisdomAgriculture/defaultImg_green.jpg">
+                                    <img ng-repeat="img in item.landLevelings.images track by $index" ng-src="{{img + '?withoutwater=true'}}"  alt=""  ng-click="$ctrl.viewPicture(item.landLevelings.images, $event)" err-src="img/default-user.png">
                                 </div>
             
                                 <div class="crop-flat-land" ng-if="item.projectData && item.projectData.length > 0">
@@ -515,7 +513,7 @@
                         <div class="bottom-dashed-1px font-12">DTX5000 | 有机质 600公斤 3.60元/公斤</div>
                         <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{item.landLevelings.description}}</div>
                         <div class="smooththings-list-img">
-                            <img ng-repeat="img in item.landLevelings.images track by $index" src="{{img}}" data-toggle="lightbox"
+                            <img ng-repeat="img in item.landLevelings.images track by $index" ng-src="{{img}}" data-toggle="lightbox"
                                 light-box data-remote="{{img}}?size=original" alt="" ng-click="$ctrl.viewPicture(item.landLevelings.images, $event)" err-src="img/default-user.png">
                         </div>
     
@@ -593,8 +591,8 @@
                             </div>
                             <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{$ctrl.laboratoryData.detectionItem.description}}</div>
                             <div class="smooththings-list-img padding-bottom-10">
-                                <img ng-repeat="img in item.imgArr[0].images track by $index" src="{{img+'?withoutwater=true'}}"
-                                    data-toggle="lightbox" light-box data-remote="{{img}}" ng-click="$ctrl.viewPicture(item.imgArr[0].images, $event)"  alt="">
+                                <img ng-repeat="img in item.imgArr[0].images track by $index" ng-src="{{ img + '?withoutwater=true'}}"
+                                     ng-click="$ctrl.viewPicture(item.imgArr[0].images, $event)"  alt="">
                             </div>
                             <div class="table-responsive no-margin" style="margin: 0">
                                 <table class="table no-margin table-condensed  table-striped">
@@ -668,8 +666,8 @@
                             </div>
                             <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{$ctrl.laboratoryData.detectionItem.description}}</div>
                             <div class="smooththings-list-img padding-bottom-10">
-                                <img ng-repeat="item in $ctrl.laboratoryData.detectionItem.images track by $index" src="{{item}}"
-                                    data-toggle="lightbox" light-box data-remote="{{item}}" alt="" ng-click="$ctrl.viewPicture($ctrl.laboratoryData.detectionItem.images, $event)"
+                                <img ng-repeat="item in $ctrl.laboratoryData.detectionItem.images track by $index" ng-src="{{item}}"
+                                     alt="" ng-click="$ctrl.viewPicture($ctrl.laboratoryData.detectionItem.images, $event)"
                                     err-src="img/jiang_img/1.png">
                             </div>
                             <div class="table-responsive" style="margin: 0">
