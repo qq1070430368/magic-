@@ -1,0 +1,3 @@
+app/angularjs/vendor/**/*.js
+app/safetysupervisionweb/vendor/**/*.js
+node_modules

@@ -1,0 +1,856 @@
+<div class="dashboardCrops-file" ng-click="$ctrl.first()">
+    <img src="img/people1.jpg" alt="">
+    <div class="prod-container" ng-click="$ctrl.clickAll($event)" ng-if="false">
+        <!-- <no-data ng-if="$ctrl.noData"></no-data> -->
+        <no-barcode ng-if="$ctrl.noData"></no-barcode>
+        <div class="anchor" id="navbar-example" ng-if="!loaderLoading && !$ctrl.noData">
+            <ul class="anchor-list nav" ng-class="{'active1': !$ctrl.meauClip}">
+                <li class="but" ng-repeat="item in $ctrl.cropNavTaskList track by $index" ng-class="{'active': $index === $ctrl.tabIndex }"
+                    ng-click="$ctrl.anchorClick($event, item, $index);">
+                    <a href="#{{item.type}}"
+                        >{{item.name}}</a> 
+                 </li>
+            </ul>
+            <span class="
+                        anchor-icon anchor-icon1" ng-click="$ctrl.meaudropDown($event)">
+                        <i class="iconfont " ng-class="{true: 'icon-caidan', false: 'icon-shouhui'}[$ctrl.meauClip]"></i>
+                        </span>
+        </div>
+        <!-- <no-barcode ng-if="!$ctrl.data"></no-barcode> -->
+        <div class="prod-content dashboard-cropfile" ng-if="!loaderLoading && $ctrl.data">
+
+            <!-- 作物百科介绍 -->
+            <div class="shuffling">
+                <div class="include-dashboard" ng-repeat="item in $ctrl.cropNavTaskList track by $index">
+                    <div data-ng-include=" item.templateUrl " id="{{item.id}}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 种植百科 -->
+<script type="text/ng-template" id="crop_introduction.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-zuowujieshao"></i>
+                <span class="_crops-file-name">作物植物百科介绍</span>
+            </div>
+            <no-data text-str="暂无百科介绍" data="$ctrl.cropIntroduce" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con">
+                <!-- ng-bind="html" -->
+                <div class="crop-binding-html" ng-bind-html="$ctrl.cropIntroduce">
+                   
+                </div>
+               
+            </div>
+        </div>
+    
+    </div>
+</script>
+<!-- 种植企业 -->
+<script type="text/ng-template" id="crop_enterprise_plant.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10" ng-if="$ctrl.companyPlant">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-qiyexinxi"></i>
+                <span class="_crops-file-name">种植企业信息</span>
+            </div>
+            <no-data text-str="暂无企业信息" data="$ctrl.companyPlant" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con">
+                <p class="main-crop" ng-bind="$ctrl.companyPlant.description"></p>
+                <!-- 地图 -->
+                <!-- <div class="map card-list-shadow" leaflet-map="phone" defer="$ctrl.companyDefer" map="map" options="$ctrl.companyOptions"
+                    style="position: relative; width: 100%; height: 200px" >
+                </div> -->
+                <div class="slideCenter" ng-if="$ctrl.companyPlant.companyImg">
+                    <ul class="slideListImg">
+                        <li ng-repeat="img in $ctrl.companyPlant.companyImg">
+                            <img ng-src="{{img}}?size=original" alt="" ng-click="$ctrl.viewPicture($ctrl.companyPlant.companyImg, $event)">
+                        </li>
+                    </ul>
+                </div>
+                <!-- // 公司详细信息 -->
+                <div class="enterprise-items-list">
+                    <img class="img-responsive" alt="" ng-src="{{$ctrl.companyPlant.introductionItem.imgUrl + '?withoutwater=true'}}" >
+                    <p class="enterprise-list-name" ng-bind="$ctrl.companyPlant.introductionItem.name"> <span></span> </p>
+                    <p> <span ng-bind="$ctrl.companyPlant.introductionItem.xinghao"></span></p>
+                    <p><span ng-bind="$ctrl.companyPlant.introductionItem.address"></span> </p>
+                    <p> <span>注册时间 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.registeredtime"></label></p>
+                    <p> <span>注册资本 : </span> <label ng-bind="$ctrl.companyPlant.introductionItem.registeredcapital"></label></p>
+                    <p> <span>企业法人 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.enterpriseMan"> </label> </p>
+                    <p> <span>英文名称 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.englishnames"></label></p>
+                    <p> <span>注册地址 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.registeredaddress"></label></p>
+                    <!-- <p><span>开户银行 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.account"></label></p>
+                    <p> <span>银行账号 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.bankaccount"></label></p> -->
+                    <p> <span>登记机关 :</span> <label ng-bind="$ctrl.companyPlant.introductionItem.registration"></label></p>
+                    <p ng-bind="$ctrl.companyPlant.introductionItem.companyaddress">山东省 潍坊市 峡山区 高新项目区峡山农产品综合交易物流中心2号楼</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+</script>
+<!-- 责任人 -->
+<script type="text/ng-template" id="crop_responsibleMan.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10" ng-if="false">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-alarm"></i>
+                <span class="_crops-file-name">当前作物负责人信息</span>
+            </div>
+            <no-data text-str="暂无作物负责人信息" data="$ctrl.responselist.responsibleData" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con">
+                <ul class="response-crop margin-top-10">
+                    <li ng-repeat="item in $ctrl.responselist.responsibleData track by $index">
+                        <div class="response-img">
+                            <img ng-src="{{item.images}}" alt="当前作物负责人图片">
+                        </div>
+                        <div class="response-list">
+                            <span>{{item.responsibleMan}}</span>
+                            <!-- <span>{{item.card}}</span> -->
+                            <!-- <span>{{item.bornTime}}</span> -->
+                            <span>{{item.starttime}} - {{item.endtime}}</span>
+                            <div class="response-icon padding-left-5 padding-right-5 padding-top-5">
+                                <i class="iconfont {{item}}" ng-repeat="item in item.stageIcon track by $index"></i>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10" ng-if="$ctrl.responselist.responsibleData">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-fuzeren"></i>
+                <span class="_crops-file-name">当前作物负责人信息</span>
+            </div>
+            <no-datas text-str="无人员信息" data="$ctrl.responselist.responsibleData"></no-datas>
+            <!-- {{$ctrl.responselist.responsibleData}} -->
+            <section>
+                <!-- <div class="panel-shadow bg-white person-head">
+                    <span><i class="iconfont icon-tudi"></i><span class="head-title">土地规划</span></span>
+                    <span><i class="iconfont icon-shengchangqi pro-orange"></i><span class="head-title">生长期</span></span>
+                    <span><i class="iconfont icon-shouhuoqi pro-yellow"></i><span class="head-title">收获期</span></span>
+                    <span><i class="iconfont icon-shangpinqi pro-blue"></i><span class="head-title">商品期</span></span>
+                    <span><i class="iconfont icon-wuliuxinxicopy pro-red"></i><span class="head-title">物流</span></span>
+                </div> -->
+                <div class="person-list padding-top-10  response-crop">
+                    <div class="col-xs-6 padding-0 padding-right-5 margin-bottom-5" ng-repeat="item in $ctrl.responselist.responsibleData">
+                        <div class="person-item bg-white panel-shadow">
+                            <img class="person-img img-responsive" ng-src="{{item.images}}"  ng-click="$ctrl.viewPicture(item.images, $event)" err-src="img/default-user.png" alt=""><!-- ng-src="item.imgUrl" -->
+                            <div class="person-info padding-left-10">
+                                <div class="person-name">{{item.responsibleMan}}</div>
+                                <div class="person-icons">
+                                    <i class="iconfont {{item}}" ng-repeat="item in item.stageIcon track by $index"></i>
+                                    <!-- <i class="iconfont icon-wuliuxinxicopy pro-red"></i> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="load-mores panel-shadow bg-white person-bottom" ng-click="$ctrl.renyuanDrop()" ng-if="$ctrl.PageData.personParty.responsibleData.length > 10 && $ctrl.pageNumber7 !== $ctrl.viewmore7">
+                    <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.renyuanDrop()"></i> -->
+                    <span>查看更多</span>
+                </div>
+            </section>
+        </div>
+
+    </div>
+</script>
+<!-- 土地平整 -->
+<script type="text/ng-template" id="crop_land_flat.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-tudipingzheng"></i>
+                <span class="_crops-file-name">土地平整事务</span>
+            </div>
+            <no-data text-str="暂无土地平整数据" data="$ctrl.smooththingsData.smooththingsData" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con">
+                  
+                <div class="smooththings-items" ng-if="$ctrl.smooththingsData.smooththingsData">
+                    <div class="smooththings-items-list margin-top-10" ng-repeat="item in $ctrl.smooththingsData.smooththingsData track by $index"
+                        ng-class="{'smooththings-bottom': !$last}">
+                        <div>{{item.landLevelings.name}} &nbsp
+                        </div>
+                        <div> {{item.landLevelings.startTime || '2018-08-15' | date:
+                            'yyyy/MM/dd'}} - {{item.landLevelings.endTime || '2018-08-15' | date: 'yyyy/MM/dd'}}</div>
+                        <div class="bottom-dashed-1px">
+                            <span>{{item.landLevelings.responsibleMan}}</span> |
+                            <span ng-repeat="data in item.landLevelings.practitionersMan track by $index" style="margin-right: 4px;">{{data}}</span>
+                        </div>
+                        <div class="bottom-dashed-1px" ng-if="item.landLevelings.smooththingsmodel">{{item.landLevelings.smooththingsmodel}}
+                            |
+                            {{item.landLevelings.cultivatingway}}</div>
+                        <div class="smooth-suppList">
+                            <span ng-if="item.landLevelings.suppList.length > 1" ng-repeat="doges in item.landLevelings.suppList | limitTo: 8">{{doges.name}}
+                                | 价格: {{doges.price}}</span>
+                        </div>
+    
+                        <!-- <div class="bottom-dashed-1px font-12">DTX4000 | 豆豉 500公斤 3.50元/公斤 </div>
+                        <div class="bottom-dashed-1px font-12">DTX5000 | 有机质 600公斤 3.60元/公斤</div> -->
+                        <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{item.landLevelings.description}}</div>
+                        <div class="smooththings-list-img">
+                            <img ng-repeat="img in item.landLevelings.images track by $index" src="{{img}}" data-toggle="lightbox"
+                                light-box data-remote="{{img}}?size=original" alt=""  ng-click="$ctrl.viewPicture(item.landLevelings.images, $event)"  err-src="img/default-user.png">
+                        </div>
+    
+                        <div class="crop-flat-land" ng-if="item.projectData && item.projectData.length > 0">
+                            <section class="">
+                                    <ul class="prod-list">
+                                        <li class="prod-list-item bg-white">
+                                            <h5 style="width: 20%">事务名称</h5>
+                                            <h5 style="width: 22%">属性名称</h5>
+                                            <h5 style="width: 25%">属性值阙</h5>
+                                            <h5 style="width: 24%">标签</h5>
+                                        </li>
+                                        <li class="prod-list-item bg-white" ng-repeat="data in item.projectData | limitTo: 12">
+                                            <span class="td-over-label" style="width: 20%">{{data.projectName}}</span>
+                                            <span class="td-over-label" style="width: 22%">{{data.attributeName || 'ph值'}}</span>
+                                            <span class="text-right td-over-label" style="width: 25%">{{data.attributeValue}}</span>
+                                            <span class="text-right td-over-label" style="width: 24%">{{data.label}}</span>
+                                        </li>
+                                        <li class="load-mores bg-white" ng-click="$ctrl.dropDown()" ng-if="$ctrl.PageData.automaticDetection.storageDetectionValue.length > 10 && $ctrl.pageNumber !== $ctrl.viewmore">
+                                            <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDown()"></i> -->
+                                            <span>查看更多</span>
+                                        </li>
+                                    </ul>
+                             </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</script>
+<!-- 空间位置 -->
+<script type="text/ng-template" id="crop_space_place.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-kongjianweizhi"></i>
+                <span class="_crops-file-name">作物空间位置</span>
+            </div>
+            <no-datas text-str="暂无作物位置信息" data="$ctrl.spaceData.plotInformation"></no-datas>
+            <div class="introduce-con">
+                <div class="space-items-list padding-top-5 " ng-class="{'space-list-bottom': !$last}" ng-repeat="data in $ctrl.spaceData.plotInformation"
+                    ng-if="$ctrl.spaceData">
+                    <div class="space-flex">
+                        <!-- <div></div> -->
+                        <div class="space-list-con padding-top-5 padding-bottom-5 font-12">
+                            <div>{{data.name}} &nbsp; &nbsp;<span>{{ data.description}}</span> </div>
+                            <div>
+                                <i class="iconfont icon-mianji"></i>
+                                <span> <b>面积：</b> </span>{{data.area}}亩</div>
+                            <div>
+                                <i class="iconfont icon-quyuleixing1"></i>
+                                <span> <b>区域类型: </b> </span>{{data.regionalTypes}}</div>
+                            <div>
+                                <i class="iconfont icon-dimao"></i>
+                                <span> <b>地貌: </b> </span>{{data.landscape}}</div>
+                            <div>
+                                <i class="iconfont icon-turangleixing"></i>
+                                <span> <b>土壤类型：</b> </span>{{data.soiltype}}</div>
+                        </div>
+                        <!--  模拟地块线性表示 -->
+                        <div class="space-line-land" ng-class="{'space-line-decition': $index == 1}">
+    
+                        </div>
+    
+                    </div>
+    
+                </div>
+    
+                <!-- 地图 -->
+                <!-- <div class="map card-list-shadow" leaflet-map="phone" defer="spaceDefer" map="map" options="spaceOptions"
+                    style="position: relative; width: 100%; height: 200px">
+                </div> -->
+                <ul class="space-items-box">
+                    <li>
+                        <div class="space-items-icon">
+                            <i class="iconfont icon-fm-box"></i>
+                        </div>
+    
+                        <div class="space-box-con">
+                            <span>fmbox-demo34</span>
+                            <span>北淩家园有机农场</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="space-items-icon">
+                            <i class="iconfont icon-router"></i>
+                        </div>
+    
+                        <div class="space-box-con">
+                            <span>4#路由器</span>
+                            <span>4#设施</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="space-items-icon">
+                            <i class="iconfont icon-camera"></i>
+                        </div>
+                        <div class="space-box-con">
+                            <span>1#摄像头</span>
+                            <span>北淩家园有机农场</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="space-items-icon">
+                            <i class="iconfont icon-kongqiwenshidu1"></i>
+                        </div>
+                        <div class="space-box-con">
+                            <span>4#空气温湿度</span>
+                            <span>4#设施</span>
+                        </div>
+                    </li>
+                    <li>
+    
+                        <div class="space-items-icon">
+                            <i class="iconfont icon-turangwenshidu1"></i>
+                        </div>
+                        <div class="space-box-con">
+                            <span>土壤温湿度</span>
+                            <span>4#设施</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="space-items-icon">
+                            <i class="iconfont icon-guangzhao"></i>
+                        </div>
+                        <div class="space-box-con">
+                            <span>光照强度</span>
+                            <span>4#设施</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="space-items-icon">
+                            <i class="iconfont icon-fanmi-kaiguan"></i>
+                        </div>
+                        <div class="space-box-con">
+                            <span>开关</span>
+                            <span>4#设施</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</script>
+<!-- 生长环境 -->
+<script type="text/ng-template" id="crop_plant_environment.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10" ng-if="$ctrl.chatData">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-shengchanghuanjing"></i>
+                <span class="_crops-file-name">作物生长环境</span>
+            </div>
+            <no-data text-str="暂无作物环境信息" data="$ctrl.chatData" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con">
+                <div class="prod-panel margin-top-10" ng-repeat="chartItem in $ctrl.chatData"  ng-if="$ctrl.chatData">
+                    <span class="header-text" ng-class="{'margin-left-10': chartItem.optionsTitle.length >= 2 && !$first}"
+                        ng-repeat="data in chartItem.optionsTitle">{{data.title}}<span> ↑+{{data.max
+                            }}{{data.unit}}</span><span> ↓-{{data.min}}{{data.unit}}</span></span>
+                    <div style="background: #fff">
+                        <section>
+                            <div class="title-legend-container1" style="overflow: hidden">
+                                <span class="title-legend title-zheng font-12">
+                                    <span class="tl-item">{{chartItem.optionsTitle[0].title}}</span>
+                                    <span class="tl-item">
+                                        <i class="dian b-p-green "></i>
+                                        正常
+                                    </span>
+                                    <span class="tl-item">
+                                        <i class="dian b-p-yellow "></i>
+                                        预警
+                                    </span>
+                                    <span class="tl-item">
+                                        <i class="dian b-p-red "></i>
+                                        报警
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="title-legend-container1" style="overflow: hidden" ng-if="chartItem.optionsTitle.length === 2">
+                                <span class="title-legend title-zheng">
+                                    <span class="tl-item">{{chartItem.optionsTitle[1].title}}</span>
+                                    <span class="tl-item">
+                                        <i class="dian " style="background: #55ACEE"></i>
+                                        正常
+                                    </span>
+                                    <span class="tl-item">
+                                        <i class="dian " style="background: palevioletred"></i>
+                                        预警
+                                    </span>
+                                    <span class="tl-item">
+                                        <i class="dian " style="background: blueviolet"></i>
+                                        报警
+                                    </span>
+                                </span>
+                            </div>
+                            <!-- <img src="img/yuliang.png" style="width: 100%;height: 100%" alt=""> -->
+                             
+                            <div fm-equipment-chat equipment-data='chartItem' style="width: 100%;"></div>
+                            <!-- <div class="" style="width: 100%;" >
+                                    <div fm-echart e-data="chartItem" style="height: 200px"  width="100%" ng-if="$ctrl.newOpionsChat"></div>
+                            </div> -->
+                        </section>
+                    </div>
+                </div>
+    
+    
+            </div>
+        </div>
+    </div>
+</script>
+<!-- 播种登记 -->
+<script type="text/ng-template" id="crop_sowregistration.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-zhongzhidengji"></i>
+                <span class="_crops-file-name">播种登记</span>
+            </div>
+            <no-data text-str="暂无播种信息" data="$ctrl.plantSmoothData.smooththingsData" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con">
+                    <div class="smooththings-items" ng-ig="$ctrl.plantSmoothData.smooththingsData">
+                            <div class="smooththings-items-list margin-top-10" ng-repeat="item in $ctrl.plantSmoothData.smooththingsData track by $index"
+                                ng-class="{'smooththings-bottom': !$last}">
+                                <div>{{item.landLevelings.name}} &nbsp
+                                </div>
+                                <div> {{item.landLevelings.startTime || '2018-08-20' | date:
+                                    'yyyy/MM/dd'}} - {{item.landLevelings.endTime || '2018-08-20' | date: 'yyyy/MM/dd'}}</div>
+                                <div class="bottom-dashed-1px">
+                                    <span>{{item.landLevelings.responsibleMan}}</span> |
+                                    <span ng-repeat="data in item.landLevelings.practitionersMan track by $index" style="margin-right: 4px;">{{data}}</span>
+                                </div>
+                                <div class="bottom-dashed-1px" ng-if="item.landLevelings.smooththingsmodel">{{item.landLevelings.smooththingsmodel}}
+                                    |
+                                    {{item.landLevelings.cultivatingway}}</div>
+                                <div class="smooth-suppList">
+                                    <span ng-if="item.landLevelings.suppList.length > 1" ng-repeat="doges in item.landLevelings.suppList | limitTo: 8">{{doges.name}}
+                                        | 价格: {{doges.price}}</span>
+                                </div>
+            
+                                <!-- <div class="bottom-dashed-1px font-12">DTX4000 | 豆豉 500公斤 3.50元/公斤 </div>
+                                <div class="bottom-dashed-1px font-12">DTX5000 | 有机质 600公斤 3.60元/公斤</div> -->
+                                <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{item.landLevelings.description}}</div>
+                                <div class="smooththings-list-img">
+                                    <img ng-repeat="img in item.landLevelings.images track by $index" src="{{img}}" data-toggle="lightbox"
+                                        light-box data-remote="{{img}}?size=original" alt=""  ng-click="$ctrl.viewPicture(item.landLevelings.images, $event)" err-src="angularjs/assets/images/wisdomAgriculture/defaultImg_green.jpg">
+                                </div>
+            
+                                <div class="crop-flat-land" ng-if="item.projectData && item.projectData.length > 0">
+                                    <section class="">
+                                            <ul class="prod-list">
+                                                <li class="prod-list-item bg-white">
+                                                    <h5 style="width: 20%">事务名称</h5>
+                                                    <h5 style="width: 22%">属性名称</h5>
+                                                    <h5 style="width: 25%">属性值阙</h5>
+                                                    <h5 style="width: 24%">标签</h5>
+                                                </li>
+                                                <li class="prod-list-item bg-white" ng-repeat="data in item.projectData | limitTo: 12">
+                                                    <span class="td-over-label" style="width: 20%">{{data.projectName}}</span>
+                                                    <span class="td-over-label" style="width: 22%">{{data.attributeName || 'ph值'}}</span>
+                                                    <span class="text-right td-over-label" style="width: 25%">{{data.attributeValue}}</span>
+                                                    <span class="text-right td-over-label" style="width: 24%">{{data.label}}</span>
+                                                </li>
+                                                <li class="load-mores bg-white" ng-click="$ctrl.dropDown()" ng-if="$ctrl.PageData.automaticDetection.storageDetectionValue.length > 10 && $ctrl.pageNumber !== $ctrl.viewmore">
+                                                    <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDown()"></i> -->
+                                                    <span>查看更多</span>
+                                                </li>
+                                            </ul>
+                                     </section>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </div>
+</script>
+<!-- 过程打理 -->
+<script type="text/ng-template" id="crop_plant_progress.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-guochengdali"></i>
+                <span class="_crops-file-name">种植过程打理</span>
+            </div>
+            <no-data text-str="暂无种植信息" data="$ctrl.plantProduce.smooththingsData" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con">
+                <div class="smooththings-items" ng-if="$ctrl.plantProduce.smooththingsData">
+                    <div class="smooththings-items-list margin-top-10" ng-repeat="item in $ctrl.plantProduce.smooththingsData track by $index"
+                        ng-class="{'smooththings-bottom': !$last}">
+                        <div>{{item.landLevelings.name}} &nbsp
+                        </div>
+                        <div> {{item.landLevelings.startTime || '2018-02-09' | date:
+                            'yyyy/MM/dd'}} - {{item.landLevelings.endTime || '2018-10-09' | date: 'yyyy/MM/dd'}}</div>
+                        <div class="bottom-dashed-1px">
+                            <span>{{item.landLevelings.responsibleMan}}</span> |
+                            <span ng-repeat="data in item.landLevelings.practitionersMan track by $index" style="margin-right: 4px;">{{data}}</span>
+                        </div>
+                        <div class="bottom-dashed-1px" ng-if="item.landLevelings.smooththingsmodel">{{item.landLevelings.smooththingsmodel}}
+                            |
+                            {{item.landLevelings.cultivatingway}}</div>
+                        <div class="smooth-suppList">
+                            <span ng-if="item.landLevelings.suppList.length > 1" ng-repeat="doges in item.landLevelings.suppList | limitTo: 8">{{doges.name}}
+                                | 价格: {{doges.price}}</span>
+                        </div>
+    
+                        <div class="bottom-dashed-1px font-12">DTX4000 | 豆豉 500公斤 3.50元/公斤 </div>
+                        <div class="bottom-dashed-1px font-12">DTX5000 | 有机质 600公斤 3.60元/公斤</div>
+                        <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{item.landLevelings.description}}</div>
+                        <div class="smooththings-list-img">
+                            <img ng-repeat="img in item.landLevelings.images track by $index" src="{{img}}" data-toggle="lightbox"
+                                light-box data-remote="{{img}}?size=original" alt="" ng-click="$ctrl.viewPicture(item.landLevelings.images, $event)" err-src="img/default-user.png">
+                        </div>
+    
+                        <div class="crop-flat-land" ng-if="item.projectData && item.projectData.length > 0">
+                            <section class="">
+                                    <ul class="prod-list">
+                                        <li class="prod-list-item bg-white">
+                                            <h5 style="width: 20%">事务名称</h5>
+                                            <h5 style="width: 22%">属性名称</h5>
+                                            <h5 style="width: 25%">属性值阙</h5>
+                                            <h5 style="width: 24%">标签</h5>
+                                        </li>
+                                        <li class="prod-list-item bg-white" ng-repeat="data in item.projectData | limitTo: 12">
+                                            <span class="td-over-label" style="width: 20%">{{data.projectName}}</span>
+                                            <span class="td-over-label" style="width: 22%">{{data.attributeName || 'ph值'}}</span>
+                                            <span class="text-right td-over-label" style="width: 25%">{{data.attributeValue}}</span>
+                                            <span class="text-right td-over-label" style="width: 24%">{{data.label}}</span>
+                                        </li>
+                                        <li class="load-mores bg-white" ng-click="$ctrl.dropDown()" ng-if="$ctrl.PageData.automaticDetection.storageDetectionValue.length > 10 && $ctrl.pageNumber !== $ctrl.viewmore">
+                                            <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDown()"></i> -->
+                                            <span>查看更多</span>
+                                        </li>
+                                    </ul>
+                             </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<!-- 实验室监测 -->
+<script type="text/ng-template" id="crop_laboratory.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-jiance1"></i>
+                <span class="_crops-file-name">实验室检测</span>
+            </div>
+            <no-data text-str="暂无检测信息" data="$ctrl.laboratoryData" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con">
+                <div class="smooththings-items padding-top-10">
+                    <div class="laboratory-container-dashboard" ng-if="$ctrl.laboratoryData">
+                        <div class="laboratory-items crops-cl" ng-repeat="item in $ctrl.laboratoryData">
+                            <div>
+                                <span>{{item.landName}}</span>
+                                <span>{{item.responsibleName}}</span>
+    
+                            </div>
+                            <div class="bottom-dashed-1px">
+                                <span>{{$ctrl.laboratoryData.detectionItem.testCenter}}</span>
+                                <span>{{$ctrl.laboratoryData.detectionItem.accountedFor}}</span>
+                            </div>
+                            <div class="bottom-dashed-1px">
+                                <span>检验方式:</span>
+                                <span>{{item.sampleType || '快检'}}</span>
+                                <span>编号:</span>
+                                <span>{{item.detectionCode}}</span>
+                            </div>
+                            <div class="bottom-dashed-1px">
+                                <span>检测人:</span>
+                                <span>{{item.detectionPersonName || '张志军'}}</span>
+                            </div>
+                            <div class="bottom-dashed-1px">
+                                <span>审核人:</span>
+                                <span>{{item.responsibleName}}</span>
+                            </div>
+                            <div class="bottom-dashed-1px">
+                                <span>送检日期:</span>
+                                <span>{{item.inspectionDate}}</span>
+                            </div>
+                            <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{$ctrl.laboratoryData.detectionItem.description}}</div>
+                            <div class="smooththings-list-img padding-bottom-10">
+                                <img ng-repeat="item in $ctrl.laboratoryData.detectionItem.images track by $index" src="{{item}}"
+                                    data-toggle="lightbox" light-box data-remote="{{item}}" ng-click="$ctrl.viewPicture($ctrl.laboratoryData.detectionItem.images, $event)"  alt="">
+                            </div>
+                            <div class="table-responsive no-margin" style="margin: 0">
+                                <table class="table no-margin table-condensed  table-striped">
+                                    <tr ng-repeat="obj in item.detectionInfo | limitTo: 10 track by $index">
+                                        <td>{{obj.programName}}</td>
+                                        <td>{{obj.standardValues}}</td>
+                                        <td>{{obj.programDetailName}}</td>
+                                        <td class="col-md-4">{{obj.methods}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</script>
+<!-- 入库检测 -->
+<script type="text/ng-template" id="crop_putincode.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-rukujiance"></i>
+                <span class="_crops-file-name">入库检测</span>
+            </div>
+            <no-data text-str="暂无入库检测信息" data="$ctrl.laboratoryDatas" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con">
+                <div class="smooththings-items padding-top-10">
+                    <div class="laboratory-container-dashboard" ng-if="$ctrl.laboratoryDatas">
+                        <div class="laboratory-items crops-cl">
+                            <div>
+                                <span>{{$ctrl.laboratoryData.detectionItem.name}}</span>
+                                <span>{{$ctrl.laboratoryData.detectionItem.gardens}}</span>
+    
+                            </div>
+                            <div class="bottom-dashed-1px">
+                                <span>{{$ctrl.laboratoryData.detectionItem.testCenter}}</span>
+                                <span>{{$ctrl.laboratoryData.detectionItem.accountedFor}}</span>
+                            </div>
+                            <div class="bottom-dashed-1px">
+                                <span>检验方式:</span>
+                                <span>{{$ctrl.laboratoryData.detectionItem.testingWay}}</span>
+                                <span>编号:</span>
+                                <span>{{$ctrl.laboratoryData.detectionItem.serialNumber}}</span>
+                            </div>
+                            <div class="bottom-dashed-1px">
+                                <span>检测人:</span>
+                                <span>{{$ctrl.laboratoryData.detectionItem.detectionMan}}</span>
+                            </div>
+                            <div class="bottom-dashed-1px">
+                                <span>审核人:</span>
+                                <span>{{$ctrl.laboratoryData.detectionItem.auditMan}}</span>
+                            </div>
+                            <div class="bottom-dashed-1px">
+                                <span>送检日期:</span>
+                                <span>{{$ctrl.laboratoryData.detectionItem.inspectiontime}}</span>
+                            </div>
+                            <div style="text-indent: 24px;" class="padding-top-5 padding-bottom-5">{{$ctrl.laboratoryData.detectionItem.description}}</div>
+                            <div class="smooththings-list-img padding-bottom-10">
+                                <img ng-repeat="item in $ctrl.laboratoryData.detectionItem.images track by $index" src="{{item}}"
+                                    data-toggle="lightbox" light-box data-remote="{{item}}" alt="" ng-click="$ctrl.viewPicture($ctrl.laboratoryData.detectionItem.images, $event)"
+                                    err-src="img/jiang_img/1.png">
+                            </div>
+                            <div class="table-responsive" style="margin: 0">
+                                <table class="table no-margin table-condensed  table-striped">
+                                    <tr ng-repeat="obj in $ctrl.laboratoryData.projectData track by $index">
+                                        <td>{{obj.projectName}}</td>
+                                        <td>{{obj.attributevalue}}</td>
+                                        <td>{{obj.attributeName}}</td>
+                                        <td class="col-md-4">{{obj.label}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</script>
+<!-- 入库赋码 -->
+<script type="text/ng-template" id="crop_put_code.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-rukufuma"></i>
+                <span class="_crops-file-name">入库赋码</span>
+            </div>
+            <no-data text-str="暂无入库码" data="$ctrl.putCodeList" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con padding-top-10">
+                <!-- ng-bind="html" -->
+                <div class="commodity-list" ng-if="$ctrl.putCodeList">
+                    <!-- <span>{{item.info}}</span> -->
+                    <ul class="commodity-list-img" ng-repeat="code in $ctrl.putCodeList | limitTo: 3 track by $index">
+                        <li class="col-md-2 col-5 col-xs-2 padding-0" ng-repeat="item in code.codeInfo | limitTo: 4 track by $index">
+                            <!-- <img ng-src="{{item}}" alt="" class="brand-crops-text " ng-click="$ctrl.viewPicture($ctrl.putCode, $event)"
+                            err-src="images/jiang_img/1.png"> -->
+                            <div class="qccode-container" >
+                                <div class="qccode-list" >
+                                    <div>{{item.landName}}</div>
+                                    <div>{{item.warehouseName}}</div>
+                                    <div>{{item.levelName}} {{item.detction || '合格'}}</div>
+                                    <div>{{item.signName}}</div>
+                                    <div>{{item.batches}}</div>
+                                    <div>{{item.inboundTypeName}}</div>
+                                    <div>{{item.inWareTime}}</div>
+                                    
+                                    <div qrcode-make options="item"
+                                        class="qcode-style" ng-if="item" ng-click="$ctrl.viewPicture(item.text, $event)">
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</script>
+<!-- 商品吗 -->
+<script type="text/ng-template" id="crop_goods_code.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-shangpinfuma"></i>
+                <span class="_crops-file-name">商品赋码</span>
+            </div>
+            <no-data text-str="暂无商品码" data="$ctrl.commityCode" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con">
+                <!-- ng-bind="html" -->
+                <div class="commodity-list" >
+                    <!-- <span>{{cp.info}}</span> -->
+                    <ul class="commodity-list-img" ng-if="$ctrl.commityCode">
+                        <li ng-repeat="item in $ctrl.commityCode | limitTo: 20  track by $index" class="col-md-2  col-5 col-xs-2 padding-0">
+                            <div class="qccode-container" >
+                                <div class="qccode-list" >
+                                    <div>{{item.productName}}</div>
+                                    <div>{{item.levelName}} <label>{{item.detction}}</label></div>
+                                    <div>{{item.address}}</div>
+                                    <div>{{item.responsibleManName}}</div>
+                                    <div>{{item.productCode}}</div>
+                                    <div>{{item.harvestTime || '2018-10-09: 10:13'}}</div>
+                                    <div>{{item.landName}}</div>
+                                    <div qrcode-make options="item"
+                                        class="qcode-style" ng-if="item" ng-click="$ctrl.viewPicture(item.text, $event)">
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </li>
+    
+                    </ul>
+                </div>
+    
+                <!-- <button class="btn btn-sm" style="display: block;
+                margin: 10px auto;" ng-click="$ctrl.makeCodeTest()" > {{$ctrl.viewMake? '生成': '隐藏'}} 二维码（测试）</button>
+                <div class="qrcode-make">
+                    <div qrcode-make options="item" ng-repeat="item in $ctrl.qcOptions track by $index" class="qcode-style"
+                        ng-if="$ctrl.qcOptions" ng-click="$ctrl.viewPicture(item.text, $event)">
+                      内容: {{item.text}}
+                    </div>
+                </div> -->
+    
+            </div>
+        </div>
+    
+    </div>
+</script>
+<!-- 流通过程 -->
+<script type="text/ng-template" id="crop_circulation_process.html">
+    <div class="basicinfo panel-shadow bg-white margin-bottom-10">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-liutongguocheng"></i>
+                <span class="_crops-file-name">流通过程</span>
+            </div>
+            <no-data text-str="暂无物流信息" data="$ctrl.circulationData" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con padding-top-10" ng-if="$ctrl.circulationData">
+                <!-- ng-bind="html" -->
+                <div class="circulation-header">
+                    <span>{{$ctrl.circulationData.detectionItem.name}}</span>
+                    <span>{{$ctrl.circulationData.detectionItem.gardens}}</span>
+                    <div class="">
+                        <span>负责人</span>
+                        <span>{{$ctrl.circulationData.detectionItem.detectionMan}}</span>
+                    </div>
+                </div>
+                <p class="evaluate-list-crop" ng-bind="$ctrl.circulationData.detectionItem.description"></p>
+                <!-- <div class="map card-list-shadow" leaflet-map="phone" defer="transPortDefer" map="transportMap" options="transPortOptions"
+                    style="position: relative; width: 100%; height: 200px">
+                </div> -->
+                <div class="circulation-lists">
+                    <div class="circulation-lists-con" ng-repeat="item in $ctrl.circulationData.processData">
+                        <div class="circulation-con-flex">
+                            <div>
+                                <span> <b>单号：</b> {{item.codeName}}</span>
+                            </div>
+                            <div>
+                                <span>{{item.processtime}}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span><b>责任人: </b> {{item.peopleMan}}</span>
+                        </div>
+                        <div>
+                            <span> <b>运送过程: </b> {{item.description}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="warehouse-map-con per-full-height">
+                    <div class="fm-gis per-full-height">
+                        <!-- 地图 -->
+                        <!-- <leaflet-map defer="defer" options="$ctrl.warOptions" map='$ctrl.transportMap' class="per-full-height"> </leaflet-map> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</script>
+<!-- 客户点评 -->
+<script type="text/ng-template" id="crop_customer_reviews.html">
+    <div class="basicinfo panel-shadow bg-white" style="margin-top: 10px;">
+        <div class="crop-introduce-container">
+            <div class="crop-title">
+                <i class="iconfont icon-kehudianping"></i>
+                <span class="_crops-file-name">消费者点评</span>
+            </div>
+            <no-data text-str="暂无点评信息" data="$ctrl.evaluateData.evaluate" class="smooththingsData-margin"></no-data>
+            <div class="introduce-con">
+                <!-- ng-bind="html" -->
+                <div class="evaluate-list" ng-repeat="item in $ctrl.evaluateData.evaluate">
+                    <div class="media">
+                        <div class="media-left media-middle">
+                            <div class="evaluate">
+                                <img class="card-list-img" ng-src="{{item.evaluateimage || 'null'}}" data-toggle="lightbox" light-box data-remote="{{item.evaluateimage}}?size=original"
+                            err-src="img/default-user.png">
+                            </div>
+                        </div>
+                        <div class="media-body margin-left-10">
+                            <div class="row row-margin" style="margin: 0;">
+                                <div class="row fm-edit-panel crops-cl" style="margin: 0;">
+                                    <div class="evaluate-bugsize">
+                                        {{item.evaluateName}}
+                                        <span>{{item.evaluateTime}}</span>
+                                    </div>
+                                    <div class="evaluate-head-code">
+                                        <span>商品码 {{item.Commoditycode}}</span>
+                                        <span class="margin-left-10">规格 {{item.evaluateSpecifications}}</span>
+                                        <!-- <span class="margin-left-10">渠道 {{item.CommodityChannel}}</span> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="evaluate-list-crop" ng-bind="item.evaluatedescription"></p>
+                    <div class="evaluate-list-img">
+                        <div class="evaluate-list-image" ng-repeat="data in item.evaluateimages | limitTo: 4">
+                            <img ng-src="{{data.image || 'null'}}" ng-click="$ctrl.viewPicture(item.evaluateimages, $event)"
+                            err-src="img/jiang_img/1.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</script>
