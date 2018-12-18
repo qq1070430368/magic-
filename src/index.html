@@ -5,12 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>有酒就会有故事1234556！！！！！</title>
+    <title ng-bind="app.name"></title>
 </head>
 
 <body>
-    <div ui-view></div>
-    <loading ng-if="loaderLoading"></loading>
+    <div class="view-port-start">
+        <div ui-view></div>
+
+        <!-- 全局加载loading -->
+        <loading ng-if="loaderLoading"></loading>
+
+        <!-- 图片预览功能 -->
+        <photo-swipe ng-if="items && items.length > 0" photo-items="items"></photo-swipe>
+    </div>
+
     <script type="text/javascript" src="js/lib.js"></script>
     <!-- <script type="text/javascript" src="main.js"></script> -->
 </body>

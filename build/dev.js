@@ -34,7 +34,8 @@ const
 
 // 第三方JS
 const
-    concatLib = ['lib/jquery/jquery.min.js', 'lib/bootstrap/bootstrap.min.js', 'lib/angular.js', 'lib/angular-ui-router.min.js', 'lib/ECharts/echarts-3.8.0.min.js', 'lib/PhotoSwipe/photoswipe.min.js', 'lib/qcode-2/qrcode.min.js'];
+    concatLib = ['lib/jquery/jquery.min.js', 'lib/bootstrap/bootstrap.min.js', 'lib/angular.js', 'lib/angular-ui-router.min.js',
+        'lib/ECharts/echarts-3.8.0.min.js', 'lib/PhotoSwipe/photoswipe.min.js', 'lib/PhotoSwipe/photoswipe-ui-default.min.js', 'lib/PhotoSwipe/angular-photoswipe.js', 'lib/qcode-2/qrcode.min.js'];
 
 
 
@@ -110,8 +111,8 @@ function buildLibJs() {
     return new Promise((reslove, reject) => {
         gulp
             .src([...concatLib])
-            .pipe(plumber())
-            .pipe(cached('baseJs-task'))  // 取个名字
+            // .pipe(plumber())
+            // .pipe(cached('baseJs-task'))  // 取个名字
             .pipe(concat('lib.js'))
             .pipe(gulp.dest('dist/js/'))
             .pipe(connect.reload())
@@ -290,7 +291,7 @@ function buildIconFonts() {
 
 
 function build() {
-    let configAsync = [distImage(), buildBasicHtml(), buildBasicCss(), buildLibJs(), buildJs(), buildFileStatic(), buildIconFonts()];
+    let configAsync = [distImage(), buildBasicHtml(), buildBasicCss(), buildLibJs(), buildJs(), buildIconFonts()];
     return Promise
         .all([...configAsync])
         .then(() => {

@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
 const
     gulp = require('gulp');
 
 const oKit = {
-    BASE_VERSION: "8.0.1"
+    BASE_VERSION: '8.0.1'
 };
 
 const kit = {
@@ -15,10 +15,7 @@ const kit = {
     getErrors: getErrors,
     getWatcherConfig: getWatcherConfig,
     getUglifyConfig: getUglifyConfig,
-
-}
-
-
+};
 
 /**
  * 检测 Node 版本
@@ -27,7 +24,7 @@ const kit = {
 function checkNodeVer() {
 
     var
-        shell = require("shelljs"),
+        shell = require('shelljs'),
 
         baseVersion,
         curVersion,
@@ -35,14 +32,14 @@ function checkNodeVer() {
         isNodeAvailable,
         isNodeLessVer;
 
-    if (!shell.which("node")) {
-        shell.echo("Require Node Environment.");
-        shell.echo("Please install by: http://nodejs.org");
+    if (!shell.which('node')) {
+        shell.echo('Require Node Environment.');
+        shell.echo('Please install by: http://nodejs.org');
         shell.exit();
     }
 
     baseVersion = oKit.BASE_VERSION;
-    curVersion = shell.exec("node -v", {
+    curVersion = shell.exec('node -v', {
         silent: true
     }).stdout;
 
@@ -75,7 +72,7 @@ function checkVersion(curVersion, baseVersion) {
 
     equal = curVer.reduce((lastVal, cur, index) => {
         if (!lastVal) {
-            return false
+            return false;
         }
         let isEqual = Number(cur) === Number(baseVer[index] || 0);
 
@@ -91,10 +88,6 @@ function checkVersion(curVersion, baseVersion) {
     };
 }
 
-
-
-
-
 /**
  * 检测 npm package 是否安装正确
  * @returns { Boolean } 是否通过验证
@@ -104,7 +97,7 @@ function checkNpm() {
     const
         dependenvies = gulp.pkg.devDependencies,
         plugins = Object.keys(dependenvies),
-        shell = require("shelljs"),
+        shell = require('shelljs'),
         promise = [];
 
     let
@@ -126,14 +119,14 @@ function checkNpm() {
                     let error;
                     isPassed = false;
                     switch (msg) {
-                        case "notFind":
+                        case 'notFind':
                             isNotFind = true;
                             error = sInstallTips;
                             break;
-                        case "<":
+                        case '<':
                             error = `Your [${plugin}] version is out of date! \nPlease Install V${baseVersion.match(/([\d\.]+)/g)[0]}!`;
                             break;
-                        case ">":
+                        case '>':
                             error = `Your [${plugin}] version is too High, \nFor Stable,Please Install V${baseVersion.match(/([\d\.]+)/g)[0]}!`;
                     }
 
@@ -164,12 +157,12 @@ function checkNpm() {
  */
 function checkNpmVer(plugin, baseVersion) {
 
-    const fs = require("fs");
+    const fs = require('fs');
 
     return new Promise((resolve, reject) => {
-        fs.readFile(`./node_modules/${plugin}/package.json`, "utf-8", (err, data) => {
+        fs.readFile(`./node_modules/${plugin}/package.json`, 'utf-8', (err, data) => {
             if (err) {
-                reject("notFind");
+                reject('notFind');
                 return;
             }
 
@@ -182,7 +175,7 @@ function checkNpmVer(plugin, baseVersion) {
             isLessThan = checkVersion(curVersion, baseVersion).lt;
 
             if (!isEqual) {
-                let msg = isLessThan ? "<" : ">";
+                let msg = isLessThan ? '<' : '>';
                 reject(msg);
             }
 
@@ -198,12 +191,12 @@ function checkNpmVer(plugin, baseVersion) {
  * @param { String } error 错误提示语
  */
 function getErrors(error) {
-    const shell = require("shelljs");
-    shell.echo(" ");
-    shell.echo("### Caution: ###");
-    shell.echo("");
+    const shell = require('shelljs');
+    shell.echo(' ');
+    shell.echo('### Caution: ###');
+    shell.echo('');
     shell.echo(error);
-    shell.echo("");
+    shell.echo('');
 }
 
 /**
@@ -211,13 +204,9 @@ function getErrors(error) {
  */
 function log() {
     var arrLog = Array.prototype.slice.call(arguments);
-    arrLog.unshift("-----");
+    arrLog.unshift('-----');
     console.log.apply(console, arrLog);
 }
-
-
-
-
 
 /**
  * 获取 gulp-watch 默认配置
@@ -232,7 +221,7 @@ function getWatcherConfig(onf) {
         debounceDelay: 200,
 
         // "auto", "watch", "poll"
-        mode: "auto"
+        mode: 'auto'
     }, onf);
 }
 
@@ -291,9 +280,9 @@ function assignDeep(target, source) {
 
         target[prop] = isDeepAssign ?
             assignDeep(target[prop], source[prop]) :
-            "" === source[prop] ?
-            target[prop] :
-            source[prop];
+            '' === source[prop] ?
+                target[prop] :
+                source[prop];
 
     }
 
@@ -303,7 +292,8 @@ function assignDeep(target, source) {
 
 // 转换版本号的个数
 function transVersion(version) {
-    return version.match(/([\d\.]+)/g)[0].split(".");
+    return version.match(/([\d\.]+)/g)[0].split('.');
 }
+
 
 module.exports = kit;

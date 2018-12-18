@@ -1,4 +1,3 @@
-import { runInThisContext } from 'vm';
 
 class AppCtrl {
     static get $inject() {
@@ -152,7 +151,27 @@ class AppCtrl {
         }
 
         // 控制图片
+        $rootScope.items = [];
+        vm.viewPicture = viewPicture;
 
+        function viewPicture(images) {
+            var pullImg = [];
+            if (typeof images === 'string') {
+                pullImg.push(images);
+                images = pullImg;
+            }
+            $rootScope.items = images.map(function (item) {
+                var imgSrc = item + '?size=original';
+                if (item instanceof Object) {
+                    imgSrc = item.image + '?size=original';
+                }
+                return {
+                    src: imgSrc,
+                    w: 600,
+                    h: 400
+                };
+            });
+        }
 
 
         // filter 过滤数组
