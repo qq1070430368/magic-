@@ -4,9 +4,9 @@ function coreRouter($stateProvider, $urlRouterProvider) {
     // 默认路由
     var temp = new LoadController();
     var get = temp.loadTemplate();
-    $urlRouterProvider.otherwise('/cropFile');
+    $urlRouterProvider.otherwise('/app');
     $stateProvider
-        .state('/cropFile', get);
+        .state('/app', get);
 }
 
 
