@@ -5,7 +5,6 @@ const
 
 
 
-
 module.exports = {
     watch: true,
     mode: 'development',
@@ -54,10 +53,10 @@ module.exports = {
                     }
                 },
                 {
-                    //如果模块为html文件
+                    // 如果模块为html文件
                     test: /\.html/,
                     use: {
-                        loader: "html-loader"
+                        loader: 'html-loader'
                     }
                 },
                 {
@@ -75,8 +74,7 @@ module.exports = {
                             presets: ['@babel/preset-env']
                         }
                     },
-                    exclude: /(node_modules)/,
-                    // loader: 'babel-loader'
+                    exclude: /(node_modules)/
                 }]
     },
     plugins: [
@@ -88,8 +86,8 @@ module.exports = {
         }),
         // css 从js中抽离出来
         new extractTextPlugin('css/style.css'),
-        // 使用webpack插件压缩js 
+        // 使用webpack插件压缩js
         new uglify()
     ],
 
-}
+};

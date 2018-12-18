@@ -1,0 +1,17 @@
+*.a             
+!lib.a          
+/TODO           
+doc/*.txt     
+bin/:          
+/bin:      
+/*.c:          
+debug/*.obj:  
+**/foo:        
+a/**/b:       
+!/bin/run.sh  
+*.log:          
+config.php:   
+/mtk/           
+*.zip          
+/mtk/do.c
+/node_modules

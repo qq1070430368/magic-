@@ -7,14 +7,11 @@ const
     cached = require('gulp-cached'),
     webpack = require('webpack-stream'),
     plumber = require('gulp-plumber'),
-    // imageMin = require('gulp-imagemin'),
-    shell = require('shelljs'),
-    sourceMaps = require('gulp-sourcemaps'),
+    // shell = require('shelljs'),
+    // sourceMaps = require('gulp-sourcemaps'),
     utile = require('gulp-util'),
-    webpackConfig = require('./webpack.config'),
     imageMin = require('gulp-imagemin');
-    // gulpImportCss = require('gulp-cssimport'),
-    // babel = require('babel-loader');
+
 const kit = require('./kit');
 
 const
@@ -48,24 +45,6 @@ function clear(cb) {
     // shell.exec('mkdir dist');
     // shell.rm('dist/index.js');
 }
-
-
-// // 构建 html  in   index.html
-// function buildIndexHtml() {
-//     return new Promise((reslove, reject) => {
-//         gulp
-//             .src('src/index.html')
-//             .pipe(gulp.dest(SRC.rootPath))
-//             .pipe(connect.reload())
-//             .on('end', function () {
-//                 reslove();
-//             })
-//             .on('error', function () {
-//                 reject();
-//             });
-//     });
-// }
-
 // HTML
 function buildBasicHtml() {
     return new Promise((reslove, reject) => {
@@ -80,8 +59,8 @@ function buildBasicHtml() {
             .on('end', function () {
                 reslove();
             })
-            .on('error', function () {
-                reject();
+            .on('error', function (err) {
+                reject(err);
             });
     });
 }
@@ -139,8 +118,8 @@ function buildLibJs() {
             .on('end', function () {
                 reslove();
             })
-            .on('error', function () {
-                reject();
+            .on('error', function (err) {
+                reject(err);
             });
     });
 }
@@ -158,13 +137,13 @@ function buildJs() {
             //     loadMaps: true
             // }))
             .pipe(webpack(
-             require('./webpack.config') , null, (err, state) => {
-                if (err) {
-                    return console.log('webpack 执行出错: ', err, state);
-                }
-                console.log('webpack 热执行完成!');
-                reslove();
-            }))
+                require('./webpack.config'), null, (err, state) => {
+                    if (err) {
+                        return console.log('webpack 执行出错: ', err, state);
+                    }
+                    console.log('webpack 热执行完成!');
+                    reslove();
+                }))
             // .pipe(sourceMaps.write('.'))
             .on('error', function (err) {
                 utile.log(utile.colors.red('[Error]'), err.toString());
@@ -174,8 +153,8 @@ function buildJs() {
             .on('end', function () {
                 reslove();
             })
-            .on('error', function () {
-                reject();
+            .on('error', function (err) {
+                reject(err);
             });
     });
 }
@@ -223,7 +202,7 @@ function buildJs() {
 
 
 
-// 监听js 
+// 监听js
 (() => {
     gulp
         .task('watch-js', () => {
@@ -262,8 +241,8 @@ function buildFileStatic() {
             .on('end', function () {
                 reslove();
             })
-            .on('error', function () {
-                reject();
+            .on('error', function (err) {
+                reject(err);
             });
     });
 }
@@ -274,20 +253,20 @@ function buildFileStatic() {
  *
  */
 function distImage() {
-	
-	return new Promise((resolve, reject) => {
-		
-		gulp
-			.src(SRC.img)
-			.pipe(imageMin())
-			.pipe(gulp.dest("dist/img"))
-			.on("end", function () {
-				resolve();
-			})
-			.on("error", function () {
-				reject();
-			});
-	});
+
+    return new Promise((resolve, reject) => {
+
+        gulp
+            .src(SRC.img)
+            .pipe(imageMin())
+            .pipe(gulp.dest('dist/img'))
+            .on('end', function () {
+                resolve();
+            })
+            .on('error', function (err) {
+                reject(err);
+            });
+    });
 }
 
 // 字体图标复制
@@ -302,17 +281,16 @@ function buildIconFonts() {
             .on('end', function () {
                 reslove();
             })
-            .on('error', function () {
-                reject();
+            .on('error', function (err) {
+                reject(err);
             });
     });
 }
 
 
 
-
 function build() {
-    let configAsync = [distImage(), buildBasicHtml(), buildBasicCss(), buildLibJs(), buildJs(),  buildFileStatic(), buildIconFonts()];
+    let configAsync = [distImage(), buildBasicHtml(), buildBasicCss(), buildLibJs(), buildJs(), buildFileStatic(), buildIconFonts()];
     return Promise
         .all([...configAsync])
         .then(() => {
