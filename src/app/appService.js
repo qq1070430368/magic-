@@ -1,52 +1,45 @@
-// 初始化路由的时候需要根据二维码信息确定加载那个页面
-// class loadController {
-//     static get $inject() {
-//         return ['$location'];
-//     }
-//     constructor($location) {
-//         this.code = 'IEDW1yAwvyi6';
-//         this.$location = $location;
-//         this.cropFile = {
-//             templateUrl: './component/dashboard-crops/ctr.html',
-//             contrller: 'dashboard_crop'
-//         };
-//         this.justUrl = (path) => {
-//             if (path.indexOf('=') > -1) {
-//                 let temp = path.split('=')[1];
-//                 if (temp.indexOf('/#') > -1) {
-//                     this.code = temp.split('/')[0];
-//                 } else if (temp.indexOf('#') > -1) {
-//                     this.code = temp.split('#')[0];
-//                 } else {
-//                     this.code = temp;
-//                 }
-//             }
-//             return this.code;
-//         };
+class XhrFactory {
+    static get $inject() { return ['$state', '$http', '$q'] }
+    constructor($state, $http, $q) {
+        this.http = $http;
+        this.$q = $q;
+        this.$state = $state;
+    }
+    getData() {
+        let defer = this.$q.defer();
+        let configData = {
+            method: 'POST',
+            // url: 'https://www.fmbiz.com.cn/api/archive/product?code=' + code,
+            url: 'https://www.fmbiz.com.cn/file/datefile',
+            data: {
+                dateFileType: 'qrcodescan',
+                code: this.$state.current.code,
+                env: 'product' || window._FMBIZENV
+            }
+        };
+        this.http(configData)
+            .then(_success, _error);
 
-//     }
-//     loadTemplate() {
-//         // 初始化状态
-//         let state = false;
-//         this.path = this.$location.absUrl();
-//         this.code = this.justUrl(this.path);
-//         let codeStartWith = this.code.startsWith('IE');
-//         if (codeStartWith) {
-//             return this.cropFile;
-//             // 判断为作物档案模板 返回相应的template controller controller as
-//         }
+        function _success(response) {
+            if (response) {
+                defer.resolve(response.data);
+            }
+        }
 
+        function _error(err) {
+            defer.reject(err);
+        }
 
-//     }
-// }
+        return defer.promise;
+
+    }
+}
 
 
 
-// export default angular
+export default angular
 
-//     .module('appService', [])
+    .module('appService', [])
+    .factory('dashboardServive', ['$state', '$http', '$q', ($state, $http, $q) => new XhrFactory($state, $http, $q)])
 
-
-//     .service('loadController', loadController)
-
-//     .name;
+    .name;

@@ -1,5 +1,8 @@
 @import '../../lib/bootstrap/bootstrap.min.css';
 @import '../css/reset.css';
+@import '../../lib/PhotoSwipe/photoswipe.css';
+@import '../../lib//PhotoSwipe/default-skin/default-skin.css';
+@import '../../lib/swiperSlide/swipeslider.css';
 @import '../css/iconfont.css';
 /*
  * index-css
@@ -387,7 +390,6 @@
   line-height: 28px;
   color: #81B441;
   font-size: 14px;
-  
 }
 .mainpage-wu {
   text-align: center;
@@ -1356,8 +1358,11 @@
   font-weight: 600;
   text-align: right;
   display: inline-block;
-  width: 70px;
+  width: 65px;
   font-size: 12px;
+}
+.crop-introduce-container .introduce-con p label {
+  display: inline;
 }
 .crop-introduce-container .slideCenter .slideListImg {
   display: flex;
@@ -1635,8 +1640,8 @@
 }
 .commodity-list-img .qccode-container .qcode-style {
   position: absolute;
-  top: 22px;
-  right: -25px;
+  top: 16px;
+  right: -31px;
 }
 .commodity-list-img .qccode-container .qcode-style img {
   width: 55px;
@@ -2348,6 +2353,7 @@
   box-sizing: border-box;
   font-family: sans-serif;
   color: rgba(200, 200, 200, 0.5);
+  position: fixed;
 }
 .box {
   display: inline-block;

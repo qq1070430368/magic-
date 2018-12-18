@@ -21,7 +21,7 @@ const
         ],
         js: [
             'src/index.js',
-            'src/component/**/*.js'
+            'component/**/*.js'
         ],
         img: [
             'src/img/**'
@@ -35,7 +35,7 @@ const
 // 第三方JS
 const
     concatLib = ['lib/jquery/jquery.min.js', 'lib/bootstrap/bootstrap.min.js', 'lib/angular.js', 'lib/angular-ui-router.min.js',
-        'lib/ECharts/echarts-3.8.0.min.js', 'lib/PhotoSwipe/photoswipe.min.js', 'lib/PhotoSwipe/photoswipe-ui-default.min.js', 'lib/PhotoSwipe/angular-photoswipe.js', 'lib/qcode-2/qrcode.min.js'];
+        'lib/ECharts/echarts-3.8.0.min.js', 'lib/PhotoSwipe/photoswipe.min.js', 'lib/PhotoSwipe/photoswipe-ui-default.min.js', 'lib/qcode-2/qrcode.min.js', 'lib/swiperSlide/swipeslider.min.js'];
 
 
 

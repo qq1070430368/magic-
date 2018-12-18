@@ -1,49 +1,12 @@
 import { AppCtrl } from './ctr';
 import echartsSeror from '../../app/commonDirective/echart.seror.directive';
 import canvasQrcode from '../../app/commonDirective/qrcode.make.directive';
-console.log(canvasQrcode, 'asdad')
-class XhrFactory {
-    static get $inject() { return ['$state', '$http'] }
-    constructor($http, $q) {
-        this.http = $http;
-        this.$q = $q;
-    }
-    getData() {
-        // const code = 'IEtkAZ9pDrET';
-        const code = 'IEDW1yAwvyi6';
-        let defer = this.$q.defer();
-        let configData = {
-            method: 'POST',
-            // url: 'https://www.fmbiz.com.cn/api/archive/product?code=' + code,
-            url: 'https://www.fmbiz.com.cn/file/datefile',
-            data: {
-                dateFileType: 'qrcodescan',
-                code: code,
-                env: 'product' || window._FMBIZENV
-            }
-        };
-        this.http(configData)
-            .then(_success, _error);
 
-        function _success(response) {
-            if (response) {
-                defer.resolve(response.data);
-            }
-        }
 
-        function _error(err) {
-            defer.reject(err);
-        }
-
-        return defer.promise;
-
-    }
-}
 
 export default
 angular.module('fmDashboardCrop', [echartsSeror, canvasQrcode])
     .constant('cropNavTaskList', cropNavTaskList())
-    .factory('dashboardCropServive', ['$http', '$q', ($http, $q) => new XhrFactory($http, $q)])
     .controller('dashboard_crop', AppCtrl)
     .name;
 

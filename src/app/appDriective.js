@@ -84,9 +84,31 @@ class ErrSrc {
         }
     }
 }
+
+// 条形码不存在 type directive
+class NoBarcode {
+    constructor() {
+        this.template = 
+        `<div class="empty" id="empty_id">
+              <div class="empty-box">
+                <span class="iconfont icon-kong"></span>
+                <span class="empty-title">当前条码不存在~</span>
+              </div>
+        </div>`;
+        this.restrict = 'EA',
+        this.replace = true,
+        this.scope = {
+            showText: '='
+        }
+    }
+    link(scope, ele, attrs) {
+        scope.talkR = attrs['talkText'];
+    }
+}
 export default angular.module('GlobelDirctive', [])
     .directive('noData', () => new NoData())
     .directive('fmEchart', () => new FmEchart())
     .directive('errSrc', () => new ErrSrc())
+    .directive('noBarcode', () => new NoBarcode())
     .component('loading', loading)
     .name;

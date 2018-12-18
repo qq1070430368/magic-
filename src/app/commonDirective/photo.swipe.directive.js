@@ -1,4 +1,4 @@
-console.log('加载这个j了啊')
+
 export default angular.module('photoSwipe', [])
     .run(['$templateCache', function ($templateCache) {
         console.log($templateCache)

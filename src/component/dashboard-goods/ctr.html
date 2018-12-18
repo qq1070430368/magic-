@@ -1,1 +1,978 @@
-<div><img src="img/people3.jpg" alt=""></div>
+<div style="height: 100%;">
+    <div ui-view></div>
+    <div class="prod-container" ng-if="!loaderLoading" ng-click="$ctrl.clickAll($event)">
+        <!-- <div class="">当前暂无信息</div> -->
+        <!-- <loading-new loading="true"></loading-new> -->
+        <no-barcode ng-if="$ctrl.barcode"></no-barcode>
+        <div class="anchor" id="navbar-example" ng-if="!$ctrl.barcode">
+            <ul class="anchor-list nav" >
+                <li class="but" ng-repeat="item in $ctrl.anchorsData track by $index" ng-if="item.show" ng-click="anchorClick($event, item, $index);" ng-class="{'active': $index === $ctrl.itemNum}">
+                    <a href="#{{item.type}}" class="aa">{{item.name}}</a>
+                </li>
+                
+            </ul>
+            <span class="anchor-icon anchor-icon1" ng-click="$ctrl.anchorHidden($event)">
+                <i class="iconfont icon-caidan"></i>
+            </span>
+        </div>
+        <!-- 内容 -->
+        <div class="prod-content" ng-if="!$ctrl.barcode" id="basic">
+            <!-- 轮播图 -->
+            <div class="brand shuffling" ng-if="$ctrl.scrollImage && $ctrl.scrollImage.length" style="margin-bottom: 10px !important;">
+                <!-- <img src="" alt=""> -->
+                <figure id="full_feature" class="swipslider touch-action">
+                    <ul class="sw-slides shuffling_figure" style="margin-bottom: 0 !important;">
+                        <li class="sw-slide" ng-repeat="item in $ctrl.scrollImage">
+                            <img ng-src="{{item}}?size=394x190" alt="">
+                        </li>
+                    </ul>
+                </figure>
+            </div>
+            <!-- 基本信息 -->
+            <div class="basicinfo panel-shadow bg-white">
+                <h2 class="b-title">{{$ctrl.basicInfo.name | isNull}}<span class="fs-12">（{{$ctrl.basicInfo.commodityCode | isNull}}）</span></h2>
+                <div class="fs-15 margin-top-10">
+                    <b>{{ $ctrl.basicInfo.safeGrade | isNull}} </b>
+                    <b> {{$ctrl.basicInfo.level | isNull}} </b>
+                    <b> {{$ctrl.basicInfo.weight | isNull}}</b>
+                </div>
+                <div class="fs-15 margin-top-10">
+                    <b>{{$ctrl.basicInfo.production | isNull}}{{ $ctrl.basicInfo.province | isNull}}{{ $ctrl.basicInfo.city | isNull}} </b>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="fs-14" ng-if="$ctrl.basicInfo.shelfLife"> 保质期：{{ $ctrl.basicInfo.shelfLife | isNull }}</span>
+                </div>
+                <div class="margin-top-10">
+                    <span>采收日期：{{$ctrl.basicInfo.caishouDate | isNull}}</span><br>
+                </div>
+                <div class="margin-top-10">
+                    <span>出库时间：{{$ctrl.basicInfo.chukuDate | isNull}}</span>
+                </div>
+                <!-- <div class="margin-top-10">档案 {{$ctrl.basicInfo.fileNum | isNull}}</div> -->
+                <div class="margin-top-10">棚号：{{ $ctrl.basicInfo.regionName | isNull }} {{$ctrl.basicInfo.infracName | isNull}}</div>
+                <!-- <div class="margin-top-10">耕地 {{$ctrl.basicInfo.plowLand | isNull}}</div> -->
+                <!-- <img class="trademark-img" src="img/shangbiao.png?withoutwater=true" alt=""> -->
+            </div>
+
+            <!-- 注册信息 -->
+            <!-- <div class="com-register-info panel-shadow bg-white margin-top-10">
+                <h4 class="fs-16">注册 {{$ctrl.registered.regTime}} {{$ctrl.registered.legalPerson}}</h4>
+            </div> -->
+
+            <!-- 公司 -->
+            <!-- <div class="company panel-shadow bg-white margin-top-10">
+                <h4 class="fs-16">{{$ctrl.registered.company}}</h4>
+            </div> -->
+            <div class="company panel-shadow bg-white margin-top-10">
+                <h4 class="fs-14">{{$ctrl.registered.company | isNull}}</h4>
+                <h4 class="fs-14 margin-top-10">注册：{{$ctrl.registered.regTime | isNull}}</h4>
+                <h4 class="fs-14 margin-top-10">法人：{{$ctrl.registered.legalPerson | isNull}}</h4>
+                <h4 class="fs-14 margin-top-5" style="line-height: 24px;">地址：{{ $ctrl.registered.companyAddress | isNull }}</h4>
+                <!-- <div class="company-logo"><img style="width: 100%;height: 100%;" src="img/shangbiao.png" alt=""></div> -->
+                <div class="company-logo" ng-if="$ctrl.registered.companyImage"><img style="width: 100%;height: 100%;" ng-src="{{$ctrl.registered.companyImage}}?withoutwater=true" err-src="img/beijing.png" alt=""></div>
+            </div>
+
+            <!-- 资质证书 -->
+            <div class="certificate panel-shadow bg-white margin-top-10">
+                <!-- <img src="img/zhengshu1.png" alt="">
+                <img src="img/zhengshu1.png" alt="">
+                <img src="img/zhengshu1.png" alt="">
+                <img src="img/zhengshu1.png" alt=""> -->
+                <div class="zizhi-img" ng-repeat="image in $ctrl.zizhiImg track by $index">
+                    <img ng-src="{{image.url}}?size=72x106" alt="资质证书" err-src="img/zhengshu1.png" ng-click="$ctrl.viewPicture($ctrl.zizhiImg, $event)">
+                </div>
+            </div>
+
+            <!-- 指数 -->
+            <div class="prod-index"> 
+                <div class="prod-index-item panel-shadow bg-white margin-top-10" ng-repeat="item in $ctrl.quality">
+                    <dl>
+                        <dt>{{item.value | isNull}}</dt>
+                        <dd>
+                            <i class="iconfont fs-20" ng-class="{
+                                'icon-pinzhibaozhang': item.name === '品质指数',
+                                'icon-Group': item.name === '放心指数'
+                            }"></i> {{item.name | isNull}}
+                        </dd>
+                    </dl>
+                </div>
+                <!-- <div class="prod-index-item panel-shadow bg-white margin-top-10">
+                    <dl>
+                        <dt>10</dt>
+                        <dd>
+                            <i class="iconfont icon-Group fs-18"></i> 放心指数
+                        </dd>
+                    </dl>
+                </div> -->
+            </div>
+
+            <!-- 星评 -->
+            <div class="starRating">
+                <div class="starRating-item  panel-shadow bg-white margin-top-10" ng-repeat="item in $ctrl.starrating">
+                    <strong>{{item.name | isNull}}</strong>
+                    <div class="fs-18">
+                        <i class="iconfont" ng-repeat="s in item.value" ng-class="{true: 'icon-StarCopy pro-yellow', false: 'icon-StarCopy1'}[s.star]"></i>
+                        <!-- <i class="iconfont icon-StarCopy pro-yellow"></i> -->
+                        <!-- <i class="iconfont icon-StarCopy pro-yellow"></i> -->
+                        <!-- <i class="iconfont icon-StarCopy pro-yellow"></i> -->
+                        <!-- <i class="iconfont icon-StarCopy pro-yellow"></i> -->
+                    </div>
+                    <span class="fs-10">{{item.description | isNull}}</span>
+                </div>
+                <!-- <div class="starRating-item panel-shadow bg-white margin-top-10">
+                    <strong>外观</strong>
+                    <div class="fs-18">
+                        <i class="iconfont icon-StarCopy pro-yellow"></i>
+                        <i class="iconfont icon-StarCopy pro-yellow"></i>
+                        <i class="iconfont icon-StarCopy pro-yellow"></i>
+                        <i class="iconfont icon-StarCopy1"></i>
+                        <i class="iconfont icon-StarCopy1"></i>
+                    </div>
+                    <span class="fs-10">（形状、色泽、腐烂评分）</span>
+                </div>
+                <div class="starRating-item panel-shadow bg-white margin-top-10">
+                    <strong>包装</strong>
+                    <div class="fs-18">
+                        <i class="iconfont icon-StarCopy pro-yellow"></i>
+                        <i class="iconfont icon-StarCopy pro-yellow"></i>
+                        <i class="iconfont icon-StarCopy pro-yellow"></i>
+                        <i class="iconfont icon-StarCopy pro-yellow"></i>
+                        <i class="iconfont icon-StarCopy1"></i></div>
+                    <span class="fs-10">（重量、造型、破损评分）</span>
+                </div> -->
+            </div>
+
+            <!-- 物流 -->
+            <div ng-if="$ctrl.logisticsData" class="transport panel-shadow margin-top-10">
+                <div class="transport-item bg-white">
+                    <div class="t-icon"><i class="iconfont icon-zhuangche"></i></div>
+                    <strong class="t-count">{{$ctrl.logisticsData.storageValue | isNull}}</strong>
+                    <span class="t-text">{{$ctrl.basicInfo.infracName | isNull}}<br><span class="fs-15">采收{{$ctrl.logisticsData.storageName | isNull}}</span></span>
+                </div>
+                <div class="transport-item bg-white">
+                    <div class="transport-sub">
+                        <div class="t-sub-item" ng-repeat="item in $ctrl.logisticsData.logisticsProcess">
+                            <div class="t-icon"><i class="iconfont" ng-class="{
+                                'icon-che': item.name === '在途',
+                                'icon-huafei fs-18': item.name === '消费'
+                            }"></i></div>
+                            <strong class="t-count">{{item.value | isNull}}</strong>
+                            <span class="t-text">{{item.name | isNull}}</span>
+                        </div>
+                        <!-- <div class="t-sub-item">
+                            <div class="t-icon"><i class="iconfont icon-huafei fs-18"></i></div>
+                            <strong class="t-count">2000kg</strong>
+                            <span class="t-text">消费</span>
+                        </div> -->
+                    </div>
+                    <div class="transport-sub">
+                        <div class="t-sub-item" ng-repeat="item in $ctrl.logisticsData.inventorys">
+                            <div class="t-icon"><i class="iconfont" ng-class="{
+                                'icon-kucun': item.name === '库存',
+                                'icon-xiajiang fs-14': item.name === '损耗'
+                            }"></i></div>
+                            <strong class="t-count">{{item.value | isNull}}</strong>
+                            <span class="t-text">{{item.name | isNull}}</span>
+                        </div>
+                        <!-- <div class="t-sub-item">
+                            <div class="t-icon"><i class="iconfont icon-xiajiang fs-14"></i></div>
+                            <strong class="t-count">500kg</strong>
+                            <span class="t-text">损耗</span>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 收前检测 -->
+            <div data-ng-include="'shouqianjiance.html'" id="closeds"></div>
+            <no-data text-str="无检测报告图片" data="$ctrl.imgArr"></no-data>
+            <div class="certificate panel-shadow bg-white margin-top-10" ng-if="$ctrl.imgArr && $ctrl.imgArr.length > 0">
+                <div class="img-jiance" ng-repeat="image in $ctrl.imgArr track by $index" ng-if="image.images && image.images.length > 0">
+                    <img ng-src="{{image.images[0]}}" alt="" ng-click="$ctrl.viewPicture(image.images, $event)">
+                    <div class="img-name">{{image.detectionType}}</div>
+                </div>
+                <!-- <img src="images/img/zhengshu1.png" alt="">
+                <img src="images/img/zhengshu1.png" alt="">
+                <img src="images/img/zhengshu1.png" alt="">
+                <img src="images/img/zhengshu1.png" alt=""> -->
+            </div>
+
+            <!-- 入库前检测 -->
+            <div data-ng-include="'rukujiance.html'" id="storage"></div>
+
+            <!-- 营养价值 -->
+            <div data-ng-include="'yingyangjiazhi.html'" id="nutritional"></div>
+
+            <!-- 农药使用情况 -->
+            <div data-ng-include="'nongyaoshiyong.html'" id="pesticide"></div>
+
+            <!-- 肥料使用情况 -->
+            <div data-ng-include="'feiliaoshiyong.html'" id="fertilizer"></div>
+
+            <!-- 病虫害情况 -->
+            <div data-ng-include="'bingchonghaiqingkuang.html'" id="diseases"></div>
+
+            <!-- 空气温湿度曲线 -->
+            <div data-ng-include="'kongqiweishidu.html'" id="environment"></div>
+
+            <!-- 雨量曲线-->
+            <!-- <div data-ng-include="'yuliang.html'"></div> -->
+
+            <!-- 人员参与情况 -->
+            <div data-ng-include="'renyuancanyu.html'" id="personnel"></div>
+           
+            <!-- 流转情况 -->
+            <div data-ng-include="'liuzhuanqingkuang.html'" ng-if="$ctrl.productCodeList" id="circulation"></div>
+
+            <!-- 过程消耗情况 -->
+            <div data-ng-include="'guochengxiaohao.html'" ng-if="$ctrl.productCodeList" id="consumption"></div>
+
+            <!-- 全生命事件信息 -->
+            <div data-ng-include="'quanshengmingshijianxinxi.html'" id="lifecycle"></div>
+
+            <!-- 评价 -->
+            <div data-ng-include="'comments.html'" ng-if="$ctrl.productCodeList" id="evaluation"></div>
+
+            <!-- 资讯 -->
+            <div data-ng-include="'zixun.html'" id="information"></div>
+            
+
+        </div>
+    </div>
+</div>
+
+<!-- 收前检测 -->
+<script type="text/ng-template" id="shouqianjiance.html">
+    <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text" ng-if="!$ctrl.shouqianjiance.detectionName">收前检测</span>
+            <span class="header-text" ng-if="$ctrl.shouqianjiance.detectionName">{{$ctrl.shouqianjiance.detectionName | isNull}}
+                <span>（{{$ctrl.shouqianjiance.detectSort | isNull}}）</span>
+            <span>{{$ctrl.shouqianjiance.fromData | isNull}}</span>
+            <i class="iconfont icon-jiancejigou pro-blue"></i>
+            </span>
+            <span class="title-legend">
+                <span class="tl-item">
+                    <i class="dian b-p-green "></i>
+                    合格
+                </span>
+                <span class="tl-item">
+                    <i class="dian b-p-yellow"></i>
+                    不合格
+                </span>
+            </span>
+        </header>
+        <no-data text-str="无检测信息" data="$ctrl.shouqianjiance.storageDetectionValue"></no-data>
+        <section class="panel-shadow " ng-show="$ctrl.shouqianjiance.storageDetectionValue && $ctrl.shouqianjiance.storageDetectionValue.length > 0">
+            <ul class="prod-list prod-list-flex">
+                <li class="prod-list-item bg-white">
+                    <h5>检测项</h5>
+                    <h5>标准值</h5>
+                    <h5 class="text-right">实测值</h5>
+                    <h5>结果</h5>
+                </li>
+                <li class="prod-list-item bg-white" ng-repeat="item in $ctrl.shouqianjiance.storageDetectionValue">
+                    <span>{{item.name | isNull}}</span>
+                    <span>{{item.balance | isNull}}</span>
+                    <span class="text-right">{{item.measured | isNull}}</span>
+                    <div>
+                        <i class="dian" ng-class="{true: 'b-p-yellow', false: 'b-p-green'}[item.status == 1]"></i>
+                    </div>
+                </li>
+                <li class="load-mores bg-white" ng-click="$ctrl.dropDown()" ng-if="$ctrl.PageData.automaticDetection.storageDetectionValue.length > 10 && $ctrl.pageNumber !== $ctrl.viewmore">
+                    <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDown()"></i> -->
+                    <span>查看更多</span>
+                </li>
+            </ul>
+        </section>
+    </div>
+</script>
+
+<!-- 入库前检测 -->
+<script type="text/ng-template" id="rukujiance.html">
+    <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text" ng-if="!$ctrl.rukujiance.detectionName">入库快速检测</span>
+            <span class="header-text" ng-if="$ctrl.rukujiance.detectionName">{{$ctrl.rukujiance.detectionName | isNull}}
+                <span>（{{$ctrl.rukujiance.detectSort | isNull}}）</span>
+            <span>{{$ctrl.rukujiance.fromData | isNull}}</span>
+            <i class="iconfont icon-jiancejigou pro-blue"></i>
+            </span>
+            <span class="title-legend">
+                <span class="tl-item">
+                    <i class="dian b-p-green "></i>
+                    合格
+                </span>
+            <span class="tl-item">
+                    <i class="dian b-p-yellow"></i>
+                    不合格
+                </span>
+            </span>
+        </header>
+        <no-data text-str="无入库快检信息" data="$ctrl.rukujiance.automaticDetectionValue"></no-data>        
+        <section class="panel-shadow" ng-if="$ctrl.rukujiance.automaticDetectionValue && $ctrl.rukujiance.automaticDetectionValue.length > 0">
+            <ul class="prod-list prod-list-flex">
+                <li class="prod-list-item bg-white">
+                    <h5>检测项</h5>
+                    <h5>标准值</h5>
+                    <h5 class="text-right">实测值</h5>
+                    <h5>结果</h5>
+                </li>
+                <li class="prod-list-item bg-white" ng-repeat="item in $ctrl.rukujiance.automaticDetectionValue">
+                    <span>{{item.name | isNull}}</span>
+                    <span>{{item.balance | isNull}}</span>
+                    <span class="text-right">{{item.measured | isNull}}</span>
+                    <div>
+                        <i class="dian" ng-class="{true: 'b-p-yellow', false: 'b-p-green'}[item.status == 1]"></i>
+                    </div>
+                </li>
+                <li class="load-mores bg-white" ng-click="$ctrl.rukuDrop()" ng-if="$ctrl.PageData.storageDetection.automaticDetectionValue.length > 10 && $ctrl.pageNumber2 !== $ctrl.viewmore2">
+                    <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.rukuDrop()"></i> -->
+                    <span>查看更多</span>
+                </li>
+            </ul>
+        </section>
+    </div>
+</script>
+
+<!-- 营养价值 -->
+<script type="text/ng-template" id="yingyangjiazhi.html">
+    <div class="prod-panel yingyang margin-top-10">
+        <header>
+            <span class="header-text" ng-if="!$ctrl.yingyang.detectionName">营养价值对标</span>
+            <span class="header-text" ng-if="$ctrl.yingyang.detectionName">{{$ctrl.yingyang.detectionName | isNull}}
+                <span>含量（{{$ctrl.yingyang.detectSort | isNull}}）</span>
+            <i class="iconfont icon-jiancejigou pro-blue"></i>
+            </span>
+            <!-- <span class="title-legend">
+                <span class="tl-item">
+                    <i class="dian b-p-green "></i>
+                    营养倍数
+                </span>
+            </span> -->
+        </header>
+        <no-data text-str="无营养价值信息" data="$ctrl.yingyang.nutritionalValue"></no-data>
+        <section class="panel-shadow " ng-if="$ctrl.yingyang.nutritionalValue && $ctrl.yingyang.nutritionalValue.length > 0">
+
+            <ul class="prod-list prod-list-flex">
+                <li class="prod-list-item bg-white">
+                    <h5>营养素</h5>
+                    <h5>普通生姜</h5>
+                    <h5>禄牌生姜</h5>
+                    <h5>营养倍数</h5>
+                </li>
+                <li class="prod-list-item bg-white" ng-repeat="item in $ctrl.yingyang.nutritionalValue">
+                        <span>{{item.name | isNull}}({{ item.unit | isNull }})</span>
+                        <span ng-repeat="i in item.cropList">
+                            {{i.dosage | isNull}}
+                        </span>
+                        <div class="">
+                            {{item.nutritionMultiple | isNull}}
+                            <i class="dian" ng-class="{true: 'b-p-yellow', false: 'b-p-green'}[item.status == 1]"></i>
+                        </div>
+                    </li>
+                <li class="load-mores bg-white" ng-click="$ctrl.yingyangDrop()" ng-if="$ctrl.PageData.nutritional.nutritionalValue.length > 10 && $ctrl.pageNumber3 !== $ctrl.viewmore3">
+                    <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.yingyangDrop()"></i> -->
+                    <span>查看更多</span>
+                </li>
+            </ul>
+        </section>
+    </div>
+</script>
+
+
+<!-- 农药使用情况 -->
+<script type="text/ng-template" id="nongyaoshiyong.html">
+    <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text" ng-if="!$ctrl.nongyao.detectionName">农药使用情况</span>
+            <span class="header-text" ng-if="$ctrl.nongyao.detectionName">{{$ctrl.nongyao.detectionName | isNull}}
+            </span>
+            <span class="title-legend">
+                <span class="tl-item">
+                    <i class="iconfont icon-changjia fs-12 pro-blue"></i>
+                    厂家直销&nbsp;&nbsp;
+                </span>
+                <span class="tl-item">
+                    <i class="iconfont icon-jingxiaoshang fs-12 pro-yellow"></i>
+                    经销商&nbsp;&nbsp;
+                </span>
+                <span class="tl-item">
+                    <i class="iconfont icon-pingtaiguanli fs-12 pro-orange"></i>
+                    平台合作&nbsp;&nbsp;
+                </span>
+                <span class="tl-item">
+                    <i class="iconfont icon-zizhi fs-12 pro-red"></i>
+                    自制
+                </span>
+            </span>
+        </header>
+        <no-data text-str="无农药使用记录" data="$ctrl.nongyao.pesticideValue"></no-data>
+        <section class="panel-shadow " ng-if="$ctrl.nongyao.pesticideValue && $ctrl.nongyao.pesticideValue.length > 0">
+            <ul class="prod-list">
+                <li class="prod-list-item bg-white" ng-repeat="item in $ctrl.nongyao.pesticideValue">
+                    <!-- <h5>{{item.name}}</h5>
+                    <div class="list-con">
+                        <span>亩用量 {{item.areaDosage}}</span>
+                        <span>
+                            {{item.companyName}}
+                            <i class="iconfont icon-{{item.icon}} fs-12"></i>                            
+                        </span>
+                    </div>
+                    <div>
+                        {{item.fromData}}
+                    </div> -->
+                    <div class="list-con">
+                        <div>
+                            <h5 class="margin-bottom-10">{{item.name | isNull}}</h5>
+                            <span>亩用量 {{item.areaDosage | isNull}}</span>
+                        </div>
+                        <div>
+                            <div class="margin-bottom-10 text-right">
+                                {{item.fromData | isNull}}
+                            </div>
+                            <span class="goods-right">
+                                {{item.companyName | isNull}}
+                                <i class="iconfont fs-12" ng-class="{
+                                    'icon-changjia': item.channel === '厂家直销',
+                                    'icon-jingxiaoshang': item.channel === '经销商',
+                                    'icon-pingtaiguanli': item.channel === '平台合作',
+                                    'icon-zizhi': item.channel === '自制',
+                                }"></i>                            
+                            </span>
+                        </div>
+                    </div>
+                </li>
+                <li class="load-mores bg-white" ng-click="$ctrl.nongyaoDrop()" ng-if="$ctrl.PageData.pesticide.pesticideValue.length > 10 && $ctrl.pageNumber4 !== $ctrl.viewmore4">
+                    <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.nongyaoDrop()"></i> -->
+                    <span>查看更多</span>
+                </li>
+            </ul>
+        </section>
+    </div>
+</script>
+
+<!-- 肥料使用情况 -->
+<script type="text/ng-template" id="feiliaoshiyong.html">
+    <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text" ng-if="!$ctrl.feiliao.detectionName">肥料使用情况</span>
+            <span class="header-text" ng-if="$ctrl.feiliao.detectionName">{{$ctrl.feiliao.detectionName | isNull}}
+            </span>
+            <span class="title-legend">
+                <span class="tl-item">
+                    <i class="iconfont icon-changjia fs-12 pro-blue"></i>
+                    厂家直销&nbsp;&nbsp;
+                </span>
+                <span class="tl-item">
+                    <i class="iconfont icon-jingxiaoshang fs-12 pro-yellow"></i>
+                    经销商&nbsp;&nbsp;
+                </span>
+                <span class="tl-item">
+                    <i class="iconfont icon-pingtaiguanli fs-12 pro-orange"></i>
+                    平台合作&nbsp;&nbsp;
+                </span>
+                <span class="tl-item">
+                    <i class="iconfont icon-zizhi fs-12 pro-red"></i>
+                    自制
+                </span>
+            </span>
+        </header>
+        <no-data text-str="无入肥料使用记录" data="$ctrl.feiliao.fertilizerValue"></no-data>
+        <section class="panel-shadow " ng-if="$ctrl.feiliao.fertilizerValue && $ctrl.feiliao.fertilizerValue.length > 0">
+            <ul class="prod-list">
+                <li class="prod-list-item bg-white" ng-repeat="item in $ctrl.feiliao.fertilizerValue">
+                    <!-- <h5>{{item.name}}</h5>
+                    <div class="list-con">
+                        <span>亩用量 {{item.areaDosage}}</span>
+                        <span>
+                            {{item.companyName}}
+                            <i class="iconfont icon-{{item.icon}} fs-12"></i>                            
+                        </span>
+                    </div>
+                    <div>
+                        {{item.fromData}}
+                    </div> -->
+                    <div class="list-con">
+                        <div>
+                            <h5 class="margin-bottom-10">{{item.name | isNull}}</h5>
+                            <span>亩用量 {{item.areaDosage | isNull}}</span>
+                        </div>
+                        <div>
+                            <div class="margin-bottom-10 text-right">
+                                {{item.fromData | isNull}}
+                            </div>
+                            <span class="goods-right">
+                                {{item.companyName | isNull}}
+                                <i class="iconfont fs-12" ng-class="{
+                                    'icon-changjia': item.channel === '厂家直销',
+                                    'icon-jingxiaoshang': item.channel === '经销商',
+                                    'icon-pingtaiguanli': item.channel === '平台合作',
+                                    'icon-zizhi': item.channel === '自制',
+                                }"></i>                            
+                            </span>
+                        </div>
+                    </div>
+                </li>
+                <li class="load-mores bg-white" ng-click="$ctrl.feiliaoDrop()" ng-if="$ctrl.PageData.fertilizer.fertilizerValue.length > 10 && $ctrl.pageNumber5 !== $ctrl.viewmore5">
+                    <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.feiliaoDrop()"></i> -->
+                    <span>查看更多</span>
+                </li>
+            </ul>
+        </section>
+    </div>
+</script>
+
+<!-- 病虫害情况 -->
+<script type="text/ng-template" id="bingchonghaiqingkuang.html">
+    <div class="prod-panel bignchonghai margin-top-10">
+        <header>
+            <span class="header-text" ng-if="!$ctrl.bingchonghai.detectionName">病虫害情况</span>
+            <span class="header-text" ng-if="$ctrl.bingchonghai.detectionName">{{$ctrl.bingchonghai.detectionName | isNull}}
+                <span>（严禁类型：否）</span>
+            </span>
+            <span class="title-legend">
+                <span class="tl-item">
+                    <i class="dian  b-p-green "></i>
+                    轻微
+                </span>
+                <span class="tl-item">
+                    <i class="dian b-p-yellow "></i>
+                    急迫
+                </span>
+                <span class="tl-item">
+                    <i class="dian b-p-red "></i>
+                    紧急
+                </span>
+            </span>
+        </header>
+        <no-data text-str="无病虫害记录" data="$ctrl.bingchonghai.plantDiseasesValue"></no-data>
+        <section class="panel-shadow " ng-if="$ctrl.bingchonghai.plantDiseasesValue && $ctrl.bingchonghai.plantDiseasesValue.length > 0">
+            <ul class="prod-list">
+                <li class="prod-list-item bg-white" ng-repeat="item in $ctrl.bingchonghai.plantDiseasesValue">
+                    <h5>{{item.name | isNull}}</h5>
+                    <div class="fs-12"> 发病时间 {{item.fromData | isNull | isNull}}</div>
+                    <div class="fs-10" style="line-height: 16px">{{item.description}}</div>
+                    <!-- <i class="dian" ng-class="{true: 'b-p-yellow', false: 'b-p-green'}[item.status == 1]"></i> -->
+                    <i class="dian" ng-class="{
+                        'b-p-green': item.status == 0,
+                        'b-p-yellow': item.status == 1,
+                        'b-p-red': item.status == 2
+                    }"></i>
+                </li>
+                <li class="load-mores bg-white" ng-click="$ctrl.bingchonghaiDrop()" ng-if="$ctrl.PageData.plantDiseases.plantDiseasesValue.length > 10 && $ctrl.pageNumber6 !== $ctrl.viewmore6">
+                    <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.bingchonghaiDrop()"></i> -->
+                    <span>查看更多</span>
+                </li>
+            </ul>
+        </section>
+    </div>
+</script>
+
+<!-- 空气温湿度曲线 -->
+<script type="text/ng-template" id="kongqiweishidu.html">
+    <div class="prod-panel margin-top-10" ng-repeat="chartItem in $ctrl.sensorData">
+        <span class="header-text" ng-repeat="data in chartItem.optionsTitle">{{data.title | isNull}}<span>↑+{{data.max | isNull}}{{data.unit | isNull}}</span><span>↓-{{data.min | isNull}}{{data.unit | isNull}}</span></span>        
+        <div style="background: #fff">
+            
+            <!-- <header>
+            </header> -->
+            <section>
+                <div class="title-legend-container1" style="overflow: hidden">
+                    <span class="title-legend title-zheng">
+                        <span class="tl-item">{{chartItem.optionsTitle[0].title}}</span>
+                        <span class="tl-item">
+                            <i class="dian b-p-green "></i>
+                            正常
+                        </span>
+                        <span class="tl-item">
+                            <i class="dian b-p-yellow "></i>
+                            预警
+                        </span>
+                        <span class="tl-item">
+                            <i class="dian b-p-red "></i>
+                            报警
+                        </span>
+                    </span>
+                </div>
+                <div class="title-legend-container1" style="overflow: hidden" ng-if="chartItem.optionsTitle.length === 2">
+                    <span class="title-legend title-zheng">
+                        <span class="tl-item">{{chartItem.optionsTitle[1].title}}</span>
+                        <span class="tl-item">
+                            <i class="dian " style="background: #55ACEE"></i>
+                            正常
+                        </span>
+                        <span class="tl-item">
+                            <i class="dian " style="background: palevioletred"></i>
+                            预警
+                        </span>
+                        <span class="tl-item">
+                            <i class="dian " style="background: blueviolet"></i>
+                            报警
+                        </span>
+                    </span>
+                </div>
+                <!-- <img src="img/yuliang.png" style="width: 100%;height: 100%" alt=""> -->
+                <div fm-equipment-chat equipment-data='chartItem' style="width: 100%;"></div>
+            </section>
+        </div>
+    </div>
+</script>
+
+<!-- 雨量曲线-->
+<!-- <script type="text/ng-template" id="yuliang.html">
+    <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text">雨量曲线
+                <span>↑+134mm</span>
+            <span>↓28mm</span>
+            </span>
+            <span class="title-legend">
+                <span class="tl-item">
+                    <i class="dian b-p-green "></i>
+                    正常
+                </span>
+            <span class="tl-item">
+                    <i class="dian b-p-yellow "></i>
+                    预警
+                </span>
+            <span class="tl-item">
+                    <i class="dian b-p-red "></i>
+                    报警
+                </span>
+            </span>
+        </header>
+        <section>
+            <img src="img/yuliang.png" style="width: 100%;height: 100%" alt="">
+        </section>
+    </div>
+</script> -->
+
+<!-- 人员参与情况 -->
+<script type="text/ng-template" id="renyuancanyu.html">
+    <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text" ng-if="!$ctrl.renyuan.detectionName">人员参与情况</span>
+            <span class="header-text" ng-if="$ctrl.renyuan.detectionName">{{$ctrl.renyuan.detectionName | isNull}}</span>
+        </header>
+        <no-data text-str="无人员信息" data="$ctrl.renyuan.responsibleData"></no-data>
+        <section ng-if="$ctrl.renyuan.responsibleData && $ctrl.renyuan.responsibleData.length > 0">
+            <div class="panel-shadow bg-white person-head">
+                <span><i class="iconfont icon-tudi"></i><span class="head-title"> 土地规划</span></span>
+                <span><i class="iconfont icon-shengchangqi pro-orange"></i><span class="head-title"> 生长期</span></span>
+                <span><i class="iconfont icon-shouhuoqi pro-yellow"></i><span class="head-title"> 收获期</span></span>
+                <span><i class="iconfont icon-shangpinqi pro-blue"></i><span class="head-title"> 商品期</span></span>
+                <span><i class="iconfont icon-wuliuxinxicopy pro-red"></i><span class="head-title"> 物流</span></span>
+            </div>
+            <div class="person-list row" style="margin-right: 0;margin-left: 0;">
+                <div class="col-xs-6" style="padding: 0 10px; margin: 5px 0;" ng-repeat="item in $ctrl.renyuan.responsibleData">
+                    <div class="person-item bg-white panel-shadow">
+                        <img class="person-img" ng-src="{{item.images}}" err-src="img/default-user.png" alt="">
+                        <div class="person-info">
+                            <div class="person-name">{{item.responsible | isNull}}</div>
+                            <div class="person-icons">
+                                <i class="iconfont" ng-class="$ctrl.personIcons[iconVal]" ng-repeat="iconVal in item.iconValue"></i>
+                                <!-- <i class="iconfont icon-wuliuxinxicopy pro-red"></i> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="load-mores panel-shadow bg-white person-bottom" ng-click="$ctrl.renyuanDrop()" ng-if="$ctrl.PageData.personParty.responsibleData.length > 10 && $ctrl.pageNumber7 !== $ctrl.viewmore7">
+                <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.renyuanDrop()"></i> -->
+                <span>查看更多</span>
+            </div>
+        </section>
+    </div>
+</script>
+
+<!-- 流转情况 -->
+<script type="text/ng-template" id="liuzhuanqingkuang.html">
+    <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text" ng-if="!$ctrl.liuzhuan.detectionName">流转情况</span>
+            <span class="header-text" ng-if="$ctrl.liuzhuan.detectionName">{{$ctrl.liuzhuan.detectionName | isNull}}
+                <span>仓储 {{$ctrl.liuzhuan.storage | isNull}}</span>&nbsp;&nbsp;
+                <span>运输 {{$ctrl.liuzhuan.transportOnce | isNull}}</span>&nbsp;&nbsp;
+                <span>持续 {{$ctrl.liuzhuan.transportHours | isNull}}</span>&nbsp;&nbsp;
+                <span>运输 {{$ctrl.liuzhuan.transportKilo | isNull}}</span>
+            </span>
+        </header>
+        <no-data text-str="无流转信息" data="$ctrl.liuzhuan.circulationValue"></no-data>
+        <section class="panel-shadow " ng-if="$ctrl.liuzhuan.circulationValue && $ctrl.liuzhuan.circulationValue.length > 0">
+            <ul class="prod-list">
+                <li class="prod-list-item bg-white" ng-repeat="item in $ctrl.liuzhuan.circulationValue">
+                    <h5>{{item.name | isNull}} <span class="fs-12">（{{item.serialNumber | isNull}}）</span></h5>
+                    <div>
+                        {{item.kilo | isNull}}&nbsp;&nbsp;&nbsp;{{item.horus | isNull}}&nbsp;&nbsp;&nbsp;{{item.responsibleMan | isNull}}
+                    </div>
+                    <div class="fs-10">{{item.description | isNull}}</div>
+                    <div class="con-dian con-dian-large">
+                        {{item.position | isNull}}
+                        <i class="dian b-p-green"></i>
+                        {{item.placeName | isNull}}
+
+                    </div>
+                </li>
+                <li class="load-mores bg-white" ng-click="$ctrl.liuzhuaniDrop()" ng-if="$ctrl.PageData.circulation.circulationValue.length > 10 && $ctrl.pageNumber8 !== $ctrl.viewmore8">
+                    <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.liuzhuaniDrop()"></i> -->
+                    <span>查看更多</span>
+                </li>
+            </ul>
+        </section>
+    </div>
+</script>
+
+<!-- 过程消耗情况 -->
+<script type="text/ng-template" id="guochengxiaohao.html">
+    <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text" ng-if="!$ctrl.xiaohao.detectionName">过程消耗情况</span>
+            <span class="header-text" ng-if="$ctrl.xiaohao.detectionName">{{$ctrl.xiaohao.detectionName | isNull}}
+                <span>共计损耗{{$ctrl.xiaohao.Total | isNull}}</span>&nbsp;&nbsp;
+                <span>持续时间{{$ctrl.xiaohao.TotalTime | isNull}}</span>
+            </span>
+        </header>
+        <no-data text-str="无过程消耗记录" data="$ctrl.xiaohao.consumptionValue"></no-data>
+        <section class="panel-shadow " ng-if="$ctrl.xiaohao.consumptionValue && $ctrl.xiaohao.consumptionValue.length > 0">
+            <ul class="prod-list">
+                <li class="prod-list-item bg-white" ng-repeat="item in $ctrl.xiaohao.consumptionValue">
+                    <h5>{{item.name | isNull}} <span class="fs-12">（{{item.startDate | isNull}}至{{item.endDate | isNull}}）</span></h5>
+                    <div>
+                        损耗 {{item.consumpKilo | isNull}}&nbsp;&nbsp;&nbsp;持续 {{item.consumpTime | isNull}}
+                    </div>
+                    <div class="fs-10">{{item.description | isNull}}</div>
+                    <div class="con-dian">
+                        <i class="dian b-p-green"></i>
+                        {{item.progress | isNull}}
+
+                    </div>
+                </li>
+                <li class="load-mores bg-white" ng-click="$ctrl.xiaohaoDrop()" ng-if="$ctrl.PageData.consumption.consumptionValue.length > 10 && $ctrl.pageNumber9 !== $ctrl.viewmore9">
+                    <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.xiaohaoDrop()"></i> -->
+                    <span>查看更多</span>
+                </li>
+            </ul>
+        </section>
+    </div>
+</script>
+
+<!-- 全生命事件信息 -->
+<script type="text/ng-template" id="quanshengmingshijianxinxi.html">
+    <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text">全生命事件信息</span>
+        </header>
+        <no-data text-str="无生命事件信息记录" data="$ctrl.shengmingshijian.lifeCycleValue"></no-data>
+        <section class="" ng-if="$ctrl.shengmingshijian.lifeCycleValue && $ctrl.shengmingshijian.lifeCycleValue.length">
+            <ul class="prod-list event-list">
+                <li class="event-item" ng-if="item.seedValueList.length > 0" ng-repeat="item in $ctrl.shengmingshijian.lifeCycleValue">
+                <!-- <no-data text-str="无生命事件信息记录" data="item.seedValueList"></no-data> -->
+                    
+                    <div ng-if="data" ng-repeat="data in item.seedValueList">
+                        <div class="event-header">
+                            <div class="title-icon">
+                                <span ng-if="$first" class="big-dot"></span>
+                                <span ng-if="!$first" class="small-dot top-dot"></span>
+                                <span class="line" ng-class="{'line-top': $first}"></span>
+                                <span class="small-dot"></span>
+                            </div>
+                            <div class="title-content">
+                                <div ng-if="$first" class="stage">{{item.seedlingsName | isNull}}</div>
+                                <div class="event-name">
+                                    <span class="name">{{data.title | isNull}}</span>
+                                    <span class="time pull-right">{{data.startDate | isNull}}至{{data.endDate | isNull}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="prod-list-item panel-shadow bg-white">
+                            <ol class="sub-title">
+                                <li class="">{{data.responsibleMan | isNull}}</li>
+                                <li class="">{{data.plueaseName | isNull}}</li>
+                                <li class="">{{data.operateTypeName | isNull}}</li>
+                                <li class="">{{data.supplysName | isNull}}</li>
+                            </ol>
+                            <div class="content">{{data.description | isNull}}</div>
+                            <div class="img-list" style="justify-content: flex-start;" ng-if="data.images.length && data.images.length < 5">
+                                <img class="img" ng-repeat="img in data.images track by $index" ng-src="{{img}}" alt="" style="margin-right: 5px;" ng-click="$ctrl.viewPicture(data.images, $event)">
+                            </div>
+                            <div class="img-list" ng-if="data.images.length === 5">
+                                <img class="img" ng-repeat="img in data.images track by $index" ng-src="{{img}}" alt="" ng-click="$ctrl.viewPicture(data.images, $event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white lifecycle-more" ng-click="$ctrl.lifeCycleDrop()" ng-if="item.seedValueList && item.seedValueList.length > 0 &&
+                         $ctrl.pageNumber11 !== item.viewmore10 && $ctrl.pageNumber12 !== item.viewmore11
+                         && $ctrl.pageNumber13 !== item.viewmore12 && $ctrl.pageNumber14 !== item.viewmore13
+                         && $ctrl.pageNumber15 !== item.viewmore14 && $ctrl.pageNumber16 !== item.viewmore15">查看更多</div>
+                </li>
+                <!-- <li class="event-item">
+                    <div class="event-header">
+                        <div class="title-icon">
+                            <span class="small-dot top-dot"></span>
+                            <span class="line"></span>
+                            <span class="small-dot"></span>
+                        </div>
+                        <div class="title-content">
+                            <div class="event-name">
+                                <span class="name">灌溉作业</span>
+                                <span class="time">2015至2017</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prod-list-item bg-white">
+                        <ol class="sub-title">
+                            <li class="">张三</li>
+                            <li class="">淬火石副科级</li>
+                            <li class="">张三</li>
+                            <li class="">个用品</li>
+                        </ol>
+                        <div class="content">时间段发动机是否考虑时代峻峰</div>
+                        <div class="img-list">
+                            <img class="img" src="img/life (1).png" alt="">
+                            <img class="img" src="img/life (1).png" alt="">
+                            <img class="img" src="img/life (1).png" alt="">
+                            <img class="img" src="img/life (1).png" alt="">
+                            <img class="img" src="img/life (1).png" alt="">
+                        </div>
+                    </div>
+                </li> -->
+            </ul>
+        </section>
+    </div>
+</script>
+
+<!-- 评价 -->
+<script type="text/ng-template" id="pingjia.html">
+    <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text">评价
+                <span>（11134）</span>
+            </span>
+        </header>
+        <section>
+            <img src="img/pingjia.png" style="width: 100%;height: 100%" alt="">
+        </section>
+    </div>
+</script>
+
+<!-- 资讯 -->
+<script type="text/ng-template" id="zixun.html">
+    <!-- <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text">资讯</span>
+        </header>
+        <section>
+            <img src="img/zixun.png" style="width: 100%;height: 100%" alt="">
+        </section>
+    </div> -->
+    <div class="prod-panel margin-top-10">
+        <header>
+            <span class="header-text">小知识</span>
+        </header>
+        <no-data text-str="无相关资讯信息" data="$ctrl.knowlage.data"></no-data>
+        <section class="panel-shadow prod-panel" ng-if="$ctrl.knowlage.data && $ctrl.knowlage.data.length > 0">
+            <!-- 轮播图 -->
+            <div class="shuffling information bg-white ">
+                <!-- <figure id="zixun_feature" class="swipslider touch-action"> -->
+                    <!-- <ul class="information-list" style="margin-bottom: 0 !important;"> -->
+                        <!-- <li class="information-item" > -->
+                            <!-- <div class="information-body"> -->
+                                <!-- <div class="information-head">
+                                    <img class="information-img" src="img/lunbo1.jpg" alt="">
+                                    <div class="information-info">
+                                        <div class="name">{{item.name}}</div>
+                                        <div class="doasge">{{item.doasge}}</div>
+                                        <div class="quality">{{item.quality}}</div>
+                                        <div class="placeName">{{item.placeName}}</div>
+                                        <div class="archives">{{item.archives}}</div>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="information-msg">
+                                    <div class="msg-content">
+                                        <div class="msg-title">{{$ctrl.messagess.name}}</div>
+                                        <div class="msg-text" ng-repeat="item in $ctrl.messagess.data">{{item}}</div>
+                                    </div>
+                                </div> -->
+                                <div class="shuffling information bg-white ">
+                                    <div class="information-msg">
+                                        <div class="msg-content">
+                                            <div class="msg-title">{{$ctrl.knowlage.name}}</div>
+                                            <div class="msg-text" ng-repeat="item in $ctrl.knowlage.data">{{item}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- </div> -->
+                        <!-- </li> -->
+                    <!-- </ul> -->
+                <!-- </figure> -->
+            </div>
+            
+        </section>
+    </div>
+</script>
+
+<!-- 评价模板 -->
+<script type="text/ng-template" id="comments.html">
+    <div class="comments-content prod-panel">
+        <header>
+            <span class="header-text">评价</span>
+        </header>
+        <no-data text-str="暂无评价" data="$ctrl.comments"></no-data>
+        <section class="prod-list-item panel-shadow bg-white" ng-if="$ctrl.comments && $ctrl.comments.length > 0">
+            <div class="cc-panel" ng-repeat="item in $ctrl.comments">
+                <header class="comments-head">
+                    <div class="head-img">
+                        <img ng-src="{{item.headPic}}" alt="">
+                    </div>
+                    <div class="head-text">
+                        <strong>{{item.nickname}}</strong>
+                        <div>
+                            <span>商品码: {{item.commodityCode}}</span>
+                            <span>规格</span>: <span>5斤装</span>
+                            <span>商品渠道</span>: <span>{{item.channel}}</span>
+                        </div>
+                    </div>
+                </header>
+                <!-- <ul class="margin-top-5">
+                    <li>
+                        <span></span><span>{{item.formDate | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+                    </li>
+                </ul> -->
+                <p class="fs-12">
+                    {{item.description}}
+                </p>
+                <div class="comments-img">
+                    <!-- <img src="{{img.url}}" alt="" ng-repeat="img in item.images"> -->
+                    <img class="img" src="img/life (1).png" alt="">
+                    <img class="img" src="img/life (2).png" alt="">
+                    <img class="img" src="img/life (3).png" alt="">
+                    <img class="img" src="img/life (4).png" alt="">
+                    <img class="img" src="img/life (5).png" alt="">
+                </div>
+                <div class="view-count fs-12">
+                    <span class="text-right">{{item.formDate | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+</script>
+
+<!-- 小知识模板 -->
+<script type="text/ng-template" id="tips.html">
+    <div class="prod-tips">
+        <div class="tips-title">生姜的小知识，你肯定不知道</div>
+        <div class="tips-banner margin-top-5">
+            <img src="img/tips1.png" alt="">
+        </div>
+        <p>
+            生姜还可以增强食欲，驱寒散邪，抗衰老，抗菌，促进头发生长，治疗中暑，治疗晕车晕船，用处非常广泛。用于风寒感冒轻症，可单煎或配红糖、葱白煎服；治风寒感冒重者，以增强发汗解表之力。
+        </p>
+        <p>
+            用于胃寒呕吐，配半夏，即小半夏汤；治寒犯中焦之胃脘冷痛、食少、呕吐者，与高良姜、胡椒等温里散寒药配伍；治脾胃虚寒者，与人参、白术等补益脾气药同用；治胃热呕吐者，须与黄连、竹茹等清胃止呕药同用。
+        </p>
+        <div class="tips-imgs margin-top-5">
+            <img src="img/tips2.png" alt="">
+            <img src="img/tips3.png" alt="">
+        </div>
+    </div>
+</script>

@@ -2,8 +2,8 @@
 // static get $inject(){ return ["$window", '$stateProvider', '$urlRouterProvider']; }
 function coreRouter($stateProvider, $urlRouterProvider) {
     // 默认路由
-    var temp = new LoadController();
-    var get = temp.loadTemplate();
+    let temp = new LoadController();
+    let get = temp.loadTemplate();
     $urlRouterProvider.otherwise('/app');
     $stateProvider
         .state('/app', get);
@@ -12,13 +12,16 @@ function coreRouter($stateProvider, $urlRouterProvider) {
 
 class LoadController {
     constructor() {
-        this.code = 'IEDW1yAwvyi6';
+        // this.code = 'IEDW1yAwvyi6';
+        // this.code = 'IQtkAZ9pDrET';
+        // 商品 测试
+        this.code = 'EoMCxzUzKTYW'
         this.$location = window.location.href;
         this.cropFile = {
             url: '/app',
             templateUrl: './component/dashboard-crops/ctr.html',
             controller: 'dashboard_crop',
-            controllerAs: '$ctrl'
+            controllerAs: '$ctrl', 
         };
         this.goodsProduct = {
             url: '/app',
@@ -47,9 +50,11 @@ class LoadController {
         this.code = this.justUrl(this.path);
         let codeStartWith = this.code.startsWith('IE');
         if (codeStartWith) {
+            this.cropFile.code = this.code;
             return this.cropFile;
             // 判断为作物档案模板 返回相应的template controller controller as
         } else {
+            this.goodsProduct.code = this.code;
             return this.goodsProduct;
         }
 

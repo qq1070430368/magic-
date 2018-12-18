@@ -1,9 +1,9 @@
 
 class AppCtrl {
     static get $inject() {
-        return ['$state', '$rootScope', '$scope', '$http', 'dashboardCropServive', 'cropNavTaskList', '$sce', '$q', '$location', '$anchorScroll'];
+        return ['$state', '$rootScope', '$scope', '$http', 'dashboardServive', 'cropNavTaskList', '$sce', '$q', '$location', '$anchorScroll'];
     }
-    constructor($state, $rootScope, $scope, $http, dashboardCropServive, cropNavTaskList, $sce, $q, $location, $anchorScroll) {
+    constructor($state, $rootScope, $scope, $http, dashboardServive, cropNavTaskList, $sce, $q, $location, $anchorScroll) {
         let vm = this;
         // vm.meaudropDown = meaudropDown;
         vm.viewMake = true;
@@ -19,7 +19,7 @@ class AppCtrl {
         function init() {
             // 初始化页面模板
             vm.cropNavTaskList = cropNavTaskList;
-            dashboardCropServive.getData()
+            dashboardServive.getData()
                 .then((response) => {
                     if (response._ERROR_MESSAGE_) {
                         // alert(response._ERROR_MESSAGE_);
