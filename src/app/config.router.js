@@ -12,10 +12,10 @@ function coreRouter($stateProvider, $urlRouterProvider) {
 
 class LoadController {
     constructor() {
-        // this.code = 'IEDW1yAwvyi6';
+        this.code = 'IEDW1yAwvyi6';
         // this.code = 'IQtkAZ9pDrET';
         // 商品 测试
-        this.code = 'EoMCxzUzKTYW'
+        // this.code = 'EoMCxzUzKTYW'
         this.$location = window.location.href;
         this.cropFile = {
             url: '/app',

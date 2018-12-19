@@ -3,6 +3,6 @@ module.exports = {
     plugins: [
         require('postcss-import')(),
         require('autoprefixer'),
-        kit.isProduction() ?  require('cssnano'): false
+        kit.isProduction().dev ? false : require('cssnano')
     ]
 };

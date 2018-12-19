@@ -15,6 +15,10 @@ function appRun($rootScope) {
             return check;
         })(),
     };
+
+    // window
+    window._FMBIZENV = PRODUCTION;
+    
 }
 appRun.$inject = ['$rootScope'];
 

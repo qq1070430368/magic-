@@ -11,7 +11,7 @@ const
     // sourceMaps = require('gulp-sourcemaps'),
     utile = require('gulp-util'),
     imageMin = require('gulp-imagemin'),
-    uglify = require('uglifyjs-webpack-plugin');
+    Uglify = require('uglifyjs-webpack-plugin');
 
 const kit = require('./kit');
 
@@ -40,8 +40,16 @@ const
 
 let webpackConfig = require('./webpack.config');
 
-if(kit.isProduction()){
-    webpackConfig.plugins.push(new uglify());
+let even = ['develop', 'preProduct', 'product'];
+// 开发环境配置
+if (kit.isProduction().dev) {
+    kit.even = even[0];
+} else if (kit.isProduction().pro) {
+    kit.even = even[1];
+    webpackConfig(kit.even).plugins.push(new Uglify());
+} else if (kit.isProduction().prod) {
+    kit.even = even[2];
+    webpackConfig(kit.even).plugins.push(new Uglify());
 }
 
 // 清理dist目录线上代码
@@ -71,46 +79,6 @@ function buildBasicHtml() {
     });
 }
 
-
-(() => {
-    gulp
-        .task('watch-index-html', () => {
-            gulp
-                .watch('src/index.html', kit.getWatcherConfig())
-                .on('change', () => {
-                    kit.log('watch:  index.html ---- event');
-                    // buildIndexHtml();
-                });
-        });
-})();
-
-// HTML  // css
-function buildBasicCss() {
-    // return new Promise((reslove, reject) => {
-    //     gulp
-    //         .src('src/css/index.less')
-    //         .pipe(plumber())
-    //         .pipe(cached('baseJs-task'))  // 取个名字
-    //         .pipe(sourceMaps.init())
-    //         .pipe(plumber())
-    //         .pipe(gulpImportCss({
-    //             matchPattern: '!*.{less,sass}'
-    //         }))
-    //         .pipe(less())
-    //         .pipe(postcss([autoprefixer]))
-    //         .pipe(rename('indexStyle.css'))
-    //         .pipe(sourceMaps.write('.'))
-    //         .pipe(gulp.dest('src/css/'))
-    //         .pipe(connect.reload())
-    //         .on('end', function () {
-    //             reslove();
-    //         })
-    //         .on('error', function () {
-    //             reject();
-    //         });
-    // });
-}
-
 // 三方js文件
 function buildLibJs() {
     return new Promise((reslove, reject) => {
@@ -130,10 +98,37 @@ function buildLibJs() {
     });
 }
 // js文件
+
+gulp.task('buildJs', function() {
+    gulp
+        .src([...SRC.js])
+    // .pipe(gulpImportCss({
+    //     matchPattern: '!*.{less,sass,js}'
+    // }))
+        .pipe(plumber())
+        .pipe(cached('baseJs-task'))  // 取个名字
+    // .pipe(sourceMaps.init({
+    //     loadMaps: true
+    // }))
+        .pipe(webpack(webpackConfig(kit.even)))
+    // .pipe(sourceMaps.write('.'))
+    // .on('error', function (err) {
+    //     utile.log(utile.colors.red('[Error]'), err.toString());
+    // })
+        .pipe(gulp.dest('./dist'))
+        .pipe(connect.reload())
+        .on('end', function () {
+            reslove();
+        })
+        .on('error', function (err) {
+            reject(err);
+        });
+});
+
 function buildJs() {
     return new Promise((reslove, reject) => {
         gulp
-            .src(['src/index.html', 'src/css/index.less', ...SRC.js])
+            .src([...SRC.js])
             // .pipe(gulpImportCss({
             //     matchPattern: '!*.{less,sass,js}'
             // }))
@@ -142,18 +137,11 @@ function buildJs() {
             // .pipe(sourceMaps.init({
             //     loadMaps: true
             // }))
-            .pipe(webpack(
-                webpackConfig, null, (err, state) => {
-                    if (err) {
-                        return console.log('webpack 执行出错: ', err, state);
-                    }
-                    console.log('webpack 热执行完成!');
-                    reslove();
-                }))
+            .pipe(webpack(webpackConfig))
             // .pipe(sourceMaps.write('.'))
-            .on('error', function (err) {
-                utile.log(utile.colors.red('[Error]'), err.toString());
-            })
+            // .on('error', function (err) {
+            //     utile.log(utile.colors.red('[Error]'), err.toString());
+            // })
             .pipe(gulp.dest('./dist'))
             .pipe(connect.reload())
             .on('end', function () {
@@ -179,20 +167,6 @@ function buildJs() {
         });
 })();
 
-
-// 监听css文件
-(() => {
-    gulp
-        .task('watch-basic-css', () => {
-            gulp
-                .watch(['src/css/index.less', 'src/component/**/*.less'], kit.getWatcherConfig())
-                .on('change', () => {
-                    kit.log('watch:  css ---- event');
-                    buildBasicCss();
-                });
-        });
-})();
-
 // 监听第三方JS
 (() => {
     gulp
@@ -207,26 +181,20 @@ function buildJs() {
 })();
 
 
-
 // 监听js
-(() => {
-    gulp
-        .task('watch-js', () => {
-            gulp
-                .watch(SRC.js, kit.getWatcherConfig())
-                .on('change', () => {
-                    kit.log('watch: js ---- event');
-                    buildJs();
-                });
-        });
-})();
+
+gulp
+    .task('watch-js', () => {
+        gulp
+            .watch(SRC.js, ['buildJs']);
+    });
 
 // 监听复制第三方JS改动
 (() => {
     gulp
         .task('watch-static-js', () => {
             gulp
-                .watch(SRC.js, kit.getWatcherConfig())
+                .watch([...concatLib], kit.getWatcherConfig())
                 .on('change', () => {
                     kit.log('watch: staticjs ---- event');
                     buildFileStatic();
@@ -296,7 +264,7 @@ function buildIconFonts() {
 
 
 function build() {
-    let configAsync = [distImage(), buildBasicHtml(), buildBasicCss(), buildLibJs(), buildJs(), buildIconFonts()];
+    let configAsync = [distImage(), buildBasicHtml(), buildLibJs(), buildJs(), buildIconFonts()];
     return Promise
         .all([...configAsync])
         .then(() => {

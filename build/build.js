@@ -22,9 +22,12 @@ gulp.task('dev', ['clean'], dist.build);
 // 开发环境构建
 
 // 更新视图
-gulp.task('watch', ['watch-index-html', 'watch-basic-html', 'watch-Lib-js', 'watch-basic-css', 'watch-js', 'watch-static-js']);
+gulp.task('watch', ['watch-basic-html', 'watch-Lib-js', 'watch-static-js']);
 
 
 
 // 刷新模式
-gulp.task('uu', ['dev', 'watch'], () => server.devServer());
+gulp.task('uu', ['dev', 'watch', 'buildJs'], () => {
+    server.devServer();
+    gulp.watch('watch-js', ['buildJs']);
+});

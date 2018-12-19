@@ -2,8 +2,6 @@ export default
 angular.module('echartsSeror', [])
     .directive('fmEquipmentChat', () => new FmEquipmentChat())
     .name;
-
-
 class FmEquipmentChat {
     constructor() {
         this.restrict = 'A';

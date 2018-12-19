@@ -32,7 +32,6 @@ class CanvasQrcodeMake {
                 options.height = data.height || height;
                 // options.colorDark = '#eee';
                 // options.colorLight = 'green';
-                console.log(QRCode, '二维码');
                 options.correctLevel = QRCode.CorrectLevel.H;
                 $scope.qrcode = new QRCode($dom[0], options);
             }
@@ -49,7 +48,7 @@ class CanvasQrcodeMake {
 
     }
     ref() {
-        console.log('aaaa');
+        
     }
 
 }

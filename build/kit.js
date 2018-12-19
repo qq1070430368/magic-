@@ -227,7 +227,7 @@ function getErrors(error) {
  */
 function isProduction() {
     var cliArgs = kit.getCliArgs();
-    return !!(cliArgs.dev || true === cliArgs.production);
+    return cliArgs;
 }
 /**
  * print something
