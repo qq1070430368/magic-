@@ -1,10 +1,11 @@
 const
     WebpackHtml = require('html-webpack-plugin'),
     ExtractTextPlugin = require('extract-text-webpack-plugin'),
-    webpack = require('webpack');
+    webpack = require('webpack'),
+    Uglify = require('uglifyjs-webpack-plugin');
 
 module.exports = (even) => {
-    return {
+    let options =  {
         watch: true,
         mode: 'development',
         output: {
@@ -33,7 +34,7 @@ module.exports = (even) => {
                     },
                     {
                         loader: 'less-loader',
-    
+
                     }
                     ],
                     fallback: 'style-loader'
@@ -87,4 +88,11 @@ module.exports = (even) => {
             })
         ],
     };
+
+    if (even === 'develop') {
+        return options;
+    } else {
+        options.plugins.push(new Uglify());
+        return options;
+    }
 };

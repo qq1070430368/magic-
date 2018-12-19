@@ -10,8 +10,7 @@ const
     // shell = require('shelljs'),
     // sourceMaps = require('gulp-sourcemaps'),
     utile = require('gulp-util'),
-    imageMin = require('gulp-imagemin'),
-    Uglify = require('uglifyjs-webpack-plugin');
+    imageMin = require('gulp-imagemin');
 
 const kit = require('./kit');
 
@@ -38,26 +37,25 @@ const
     concatLib = ['lib/jquery/jquery.min.js', 'lib/bootstrap/bootstrap.min.js', 'lib/angular.js', 'lib/angular-ui-router.min.js',
         'lib/ECharts/echarts-3.8.0.min.js', 'lib/PhotoSwipe/photoswipe.min.js', 'lib/PhotoSwipe/photoswipe-ui-default.min.js', 'lib/qcode-2/qrcode.min.js', 'lib/swiperSlide/swipeslider.min.js'];
 
-let webpackConfig = require('./webpack.config');
+
 
 let even = ['develop', 'preProduct', 'product'];
+let webpackConfig = '';
 // 开发环境配置
 if (kit.isProduction().dev) {
     kit.even = even[0];
+    webpackConfig = require('./webpack.config')(kit.even);
 } else if (kit.isProduction().pro) {
     kit.even = even[1];
-    webpackConfig(kit.even).plugins.push(new Uglify());
-} else if (kit.isProduction().prod) {
+    webpackConfig = require('./webpack.config')(kit.even);
+} else {
     kit.even = even[2];
-    webpackConfig(kit.even).plugins.push(new Uglify());
+    webpackConfig = require('./webpack.config')(kit.even);
 }
 
 // 清理dist目录线上代码
 function clear(cb) {
-    // shell.exec('npm -v');
     return del([SRC.rootPath], cb);
-    // shell.exec('mkdir dist');
-    // shell.rm('dist/index.js');
 }
 // HTML
 function buildBasicHtml() {
@@ -110,7 +108,7 @@ gulp.task('buildJs', function() {
     // .pipe(sourceMaps.init({
     //     loadMaps: true
     // }))
-        .pipe(webpack(webpackConfig(kit.even)))
+        .pipe(webpack(webpackConfig))
     // .pipe(sourceMaps.write('.'))
     // .on('error', function (err) {
     //     utile.log(utile.colors.red('[Error]'), err.toString());
