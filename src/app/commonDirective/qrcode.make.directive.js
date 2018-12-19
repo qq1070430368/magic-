@@ -44,11 +44,6 @@ class CanvasQrcodeMake {
             idStr += Math.random().toString(36).substr(3);
             return idStr;
         }
-        console.log(this, 'adasdad');
-
-    }
-    ref() {
-        
     }
 
 }

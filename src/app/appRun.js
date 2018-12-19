@@ -1,7 +1,7 @@
-function appRun($rootScope) {
+function appRun($rootScope, $state) {
     // 路由监听机制 之类的
     $rootScope.app = {
-        name: '作物档案', // name of your project
+        name: '', // name of your project
         author: 'www.fmbj.com.cn', // author's name or company name
         description: 'FMBIZ', // brief description
         version: '1.0.0', // current version
@@ -16,9 +16,15 @@ function appRun($rootScope) {
         })(),
     };
 
+    $rootScope.$on('$stateChangeStart', (event, toState)=> {
+        // index ，默认等于跳转的title
+        $rootScope.app.name = toState.title;
+    });
+
     // window
+    // 由 webapck 处理 的环境变量
+    // --dev  --pro --prod;
     window._FMBIZENV = PRODUCTION;
-    
 }
 appRun.$inject = ['$rootScope'];
 

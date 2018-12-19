@@ -1,11 +1,13 @@
 {
   "name": "demo",
   "version": "1.0.0",
-  "description": "demo测试",
+  "description": "fm",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "gulp uu --mode development"
+    "dev": "gulp build  --dev",
+    "pro": "gulp build  --pro",
+    "prod": "gulp build --prod"
   },
   "author": "hq",
   "license": "ISC",

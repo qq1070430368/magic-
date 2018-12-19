@@ -14,7 +14,7 @@ class XhrFactory {
             data: {
                 dateFileType: 'qrcodescan',
                 code: this.$state.current.code,
-                env: 'product' || window._FMBIZENV
+                env: window._FMBIZENV
             }
         };
         this.http(configData)

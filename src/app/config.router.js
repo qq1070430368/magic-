@@ -12,22 +12,24 @@ function coreRouter($stateProvider, $urlRouterProvider) {
 
 class LoadController {
     constructor() {
-        this.code = 'IEDW1yAwvyi6';
-        // this.code = 'IQtkAZ9pDrET';
+        // this.code = 'IEDW1yAwvyi6';
+        // this.code = 'IEtkAZ9pDrET';
         // 商品 测试
-        // this.code = 'EoMCxzUzKTYW'
+        this.code = 'EoMCxzUzKTYW';
         this.$location = window.location.href;
         this.cropFile = {
             url: '/app',
             templateUrl: './component/dashboard-crops/ctr.html',
             controller: 'dashboard_crop',
             controllerAs: '$ctrl',
+            title: '作物档案'
         };
         this.goodsProduct = {
             url: '/app',
             templateUrl: './component/dashboard-goods/ctr.html',
             controller: 'dashboard_goods',
-            controllerAs: '$ctrl'
+            controllerAs: '$ctrl',
+            title: '商品品质'
         };
         this.justUrl = (path) => {
             if (path.indexOf('=') > -1) {

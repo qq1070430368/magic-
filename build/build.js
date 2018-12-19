@@ -27,7 +27,7 @@ gulp.task('watch', ['watch-basic-html', 'watch-Lib-js', 'watch-static-js']);
 
 
 // 刷新模式
-gulp.task('uu', ['dev', 'watch', 'buildJs'], () => {
+gulp.task('build', ['dev', 'watch', 'buildJs'], () => {
     server.devServer();
     gulp.watch('watch-js', ['buildJs']);
 });
