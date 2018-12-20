@@ -15,7 +15,8 @@ class LoadController {
         // this.code = 'IEDW1yAwvyi6';
         // this.code = 'IEtkAZ9pDrET';
         // 商品 测试
-        this.code = 'EoMCxzUzKTYW';
+        this.code = 'IELpVg7NWp6u';
+        // this.code = 'EoMCxzUzKTYW';
         this.$location = window.location.href;
         this.cropFile = {
             url: '/app',

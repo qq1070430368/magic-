@@ -39,7 +39,7 @@ const
 
 
 
-let even = ['develop', 'preProduct', 'product'];
+let even = ['develop', 'preproduct', 'product'];
 let webpackConfig = '';
 // 开发环境配置
 if (kit.isProduction().dev) {

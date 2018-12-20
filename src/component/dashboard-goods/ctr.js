@@ -10,7 +10,7 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
         $event.preventDefault();
         $event.stopPropagation();
     };
-    
+
     var getCurPageData = function (lists, itemsPerPage, currentPage) {
         var list = [];
         var index = 0;
@@ -26,23 +26,23 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
         return list;
     };
     vm.anchorsData = goodsNavTaskList;
-    vm.barcode = false; 
+    vm.barcode = false;
     vm.productCodeList = true;
     // 初始化
     vm.initListData = _initListData;
     // 异步拉取数据
     dashboardServive.getData()
         .then(function (response) {
-        if (response.data) {
-            vm.initListData(response.data)
-            $rootScope.loaderLoading = false;
-        }
-        if (response._ERROR_MESSAGE_) {
+            if (response.data) {
+                vm.initListData(response.data);
+                $rootScope.loaderLoading = false;
+            }
+            if (response._ERROR_MESSAGE_) {
             // alert(response._ERROR_MESSAGE_);
-            $rootScope.loaderLoading = false;
-            vm.barcode = true;
-        }
-    });
+                $rootScope.loaderLoading = false;
+                vm.barcode = true;
+            }
+        });
     vm.pageNumber = vm.pageNumber2 = vm.pageNumber3 = vm.pageNumber4 = vm.pageNumber5 = vm.pageNumber6 = vm.pageNumber7 = vm.pageNumber8 = vm.pageNumber9 = vm.pageNumber11 = vm.pageNumber12 = vm.pageNumber13 = vm.pageNumber14 = vm.pageNumber15 = vm.pageNumber16 = 1;
     vm.pageNumber10 = 10;
     vm.lifePageNumber = 5;
@@ -50,7 +50,7 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
         if (temp.productCode) {
             if (temp.productCode === 'false') {
                 vm.productCodeList = false;
-                vm.anchorsData.map(function(item){
+                vm.anchorsData.map(function(item) {
                     if (item.type === 'circulation' || item.type === 'consumption' || item.type === 'evaluation') {
                         item.show = vm.productCodeList;
                     }
@@ -103,7 +103,7 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
         if (temp.pesticide && temp.pesticide.pesticideValue) {
             vm.viewmore4 = Math.ceil(vm.PageData.pesticide.pesticideValue.length / 10);
             vm.nongyao.pesticideValue = getCurPageData(temp.pesticide.pesticideValue, vm.pageNumber10, vm.pageNumber4);
-            vm.nongyao.pesticideValue.map(function(item){
+            vm.nongyao.pesticideValue.map(function(item) {
                 item.areaDosage = Number(item.areaDosage.replace('g', '')).toFixed(2) + 'g';
                 item.fromData = item.fromData.replace(/-/g, '/');
                 return item;
@@ -114,7 +114,7 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
         if (temp.fertilizer && temp.fertilizer.fertilizerValue) {
             vm.viewmore5 = Math.ceil(vm.PageData.fertilizer.fertilizerValue.length / 10);
             vm.feiliao.fertilizerValue = getCurPageData(temp.fertilizer.fertilizerValue, vm.pageNumber10, vm.pageNumber5);
-            vm.feiliao.fertilizerValue.map(function(item){
+            vm.feiliao.fertilizerValue.map(function(item) {
                 item.areaDosage = Number(item.areaDosage.replace('g', '')).toFixed(2) + 'g';
                 item.fromData = item.fromData.replace(/-/g, '/');
                 return item;
@@ -160,7 +160,7 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
 
         // 全生命事件信息
         vm.shengmingshijian = temp.lifeCycle;
-        if(temp.lifeCycle && temp.lifeCycle.lifeCycleValue) {
+        if (temp.lifeCycle && temp.lifeCycle.lifeCycleValue) {
             vm.PageData.lifeCycle.lifeCycleValue.map(function(item) {
                 if (item.seedlingsName === '耕地阶段') {
                     vm.viewmore10 = Math.ceil(item.seedValueList.length / 5);
@@ -181,7 +181,7 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
                     vm.viewmore15 = Math.ceil(item.seedValueList.length / 5);
                 }
                 return item;
-            })
+            });
             vm.shengmingshijian.lifeCycleValue.map(function(item) {
                 if (item.seedlingsName === '耕地阶段') {
                     item.viewmore10 = vm.viewmore10;
@@ -219,16 +219,16 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
             // let [list, two, three, four, five] =vm.shengmingshijian.lifeCycleValue;
             // debugger
             // console.log(one, 'dsadasd')
-            let [list, two, three, four, five, fivse] =vm.shengmingshijian.lifeCycleValue;
-            
-            if(!list.seedValueList.length && !two.seedValueList.length && !three.seedValueList.length && !four.seedValueList.length && !five.seedValueList.length && !fivse.seedValueList.length) {
+            let [list, two, three, four, five, fivse] = vm.shengmingshijian.lifeCycleValue;
+
+            if (!list.seedValueList.length && !two.seedValueList.length && !three.seedValueList.length && !four.seedValueList.length && !five.seedValueList.length && !fivse.seedValueList.length) {
                 vm.shengmingshijian.lifeCycleValue = [];
-                
+
             }
-            
+
         }
-        
-        
+
+
         // vm.shengmingshijian.lifeCycleValue = []
         // vm.shengmingshijian.nutritionalValue = getCurPageData(temp.pesticide.nutritionalValue, vm.pageNumber2, vm.pageNumber);
 
@@ -320,9 +320,9 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
             }
             keyArr.sort();
             keyArr.forEach(function (x) {
-                valueArr.push(mp.get(x))
+                valueArr.push(mp.get(x));
 
-            })
+            });
             item.iconValue = valueArr;
             return item;
         });
@@ -342,7 +342,7 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
     vm.nongyaoDrop = function () {
         vm.pageNumber4++;
         vm.nongyao.pesticideValue = vm.nongyao.pesticideValue.concat(getCurPageData(vm.PageData.pesticide.pesticideValue, vm.pageNumber10, vm.pageNumber4));
-        vm.nongyao.pesticideValue.map(function(item){
+        vm.nongyao.pesticideValue.map(function(item) {
             item.areaDosage = Number(item.areaDosage.replace('g', '')).toFixed(2) + 'g';
             item.fromData = item.fromData.replace(/-/g, '/');
             return item;
@@ -351,7 +351,7 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
     vm.feiliaoDrop = function () {
         vm.pageNumber5++;
         vm.feiliao.fertilizerValue = vm.feiliao.fertilizerValue.concat(getCurPageData(vm.PageData.fertilizer.fertilizerValue, vm.pageNumber10, vm.pageNumber5));
-        vm.feiliao.fertilizerValue.map(function(item){
+        vm.feiliao.fertilizerValue.map(function(item) {
             item.areaDosage = Number(item.areaDosage.replace('g', '')).toFixed(2) + 'g';
             item.fromData = item.fromData.replace(/-/g, '/');
             return item;
@@ -404,42 +404,42 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
             if (item.seedlingsName === '收获阶段') {
                 vm.SeedHarvestValue = angular.copy(item.seedValueList);
             }
-        })
+        });
         vm.shengmingshijian.lifeCycleValue.map(function(item) {
-            if(item.seedlingsName === '耕地阶段') {
+            if (item.seedlingsName === '耕地阶段') {
                 if (item.seedValueList.length >= 5) {
                     vm.pageNumber11++;
                     item.seedValueList = item.seedValueList.concat(getCurPageData(vm.SeedLandValue, vm.lifePageNumber, vm.pageNumber11));
                 }
             }
-            if(item.seedlingsName === '播种阶段') {
+            if (item.seedlingsName === '播种阶段') {
                 if (item.seedValueList.length >= 5) {
                     vm.pageNumber12++;
-                    item.seedValueList = item.seedValueList.concat(getCurPageData(vm.SeedSowValue, vm.lifePageNumber, vm.pageNumber12));                    
+                    item.seedValueList = item.seedValueList.concat(getCurPageData(vm.SeedSowValue, vm.lifePageNumber, vm.pageNumber12));
                 }
             }
-            if(item.seedlingsName === '准备阶段') {
+            if (item.seedlingsName === '准备阶段') {
                 if (item.seedValueList.length >= 5) {
                     vm.pageNumber13++;
                     item.seedValueList = item.seedValueList.concat(getCurPageData(vm.SeedPrepareValue, vm.lifePageNumber, vm.pageNumber13));
                 }
             }
-            if(item.seedlingsName === '成长阶段') {
+            if (item.seedlingsName === '成长阶段') {
                 if (item.seedValueList.length >= 5) {
                     vm.pageNumber14++;
-                    item.seedValueList = item.seedValueList.concat(getCurPageData(vm.SeedGrowthValue, vm.lifePageNumber, vm.pageNumber14));                    
+                    item.seedValueList = item.seedValueList.concat(getCurPageData(vm.SeedGrowthValue, vm.lifePageNumber, vm.pageNumber14));
                 }
             }
-            if(item.seedlingsName === '成熟阶段') {
+            if (item.seedlingsName === '成熟阶段') {
                 if (item.seedValueList.length >= 5) {
                     vm.pageNumber15++;
-                    item.seedValueList = item.seedValueList.concat(getCurPageData(vm.SeedMatureValue, vm.lifePageNumber, vm.pageNumber15));                    
+                    item.seedValueList = item.seedValueList.concat(getCurPageData(vm.SeedMatureValue, vm.lifePageNumber, vm.pageNumber15));
                 }
             }
-            if(item.seedlingsName === '收获阶段') {
+            if (item.seedlingsName === '收获阶段') {
                 if (item.seedValueList.length >= 5) {
                     vm.pageNumber16++;
-                    item.seedValueList = item.seedValueList.concat(getCurPageData(vm.SeedHarvestValue, vm.lifePageNumber, vm.pageNumber16));                    
+                    item.seedValueList = item.seedValueList.concat(getCurPageData(vm.SeedHarvestValue, vm.lifePageNumber, vm.pageNumber16));
                 }
             }
             item.seedValueList.map(function(data) {
@@ -447,8 +447,8 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
                 data.endDate = data.endDate.replace(/-/g, '/');
                 return data;
             });
-        })
-    }
+        });
+    };
 
     vm.canshu = true;
     vm.jiance = true;
@@ -497,77 +497,77 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
     ]; */
     // 资讯
     vm.message = {
-        "messageValue": [{
-                "sildeMessageList": [{
-                    "imgSrc": "null",
-                    "title": "猕猴桃的小知识",
-                    "content": "成人每日如果吃两个猕猴桃，就能补充人体每天需要纤维量的……"
-                }],
-                "imgUrl": "null",
-                "name": "天王牌猕猴桃",
-                "doasge": "2500g",
-                "quality": "一等品",
-                "placeName": "四川省彭州市",
-                "archives": "GB/T 31121-2014"
-            },
-            {
-                "sildeMessageList": [{
-                    "imgSrc": "null",
-                    "title": "猕猴桃的小知识",
-                    "content": "成人每日如果吃两个猕猴桃，就能补充人体每天需要纤维量的……"
-                }],
-                "imgUrl": "null",
-                "name": "天王牌猕猴桃",
-                "doasge": "2500g",
-                "quality": "一等品",
-                "placeName": "四川省彭州市",
-                "archives": "GB/T 31121-2014"
-            },
-            {
-                "sildeMessageList": [{
-                    "imgSrc": "null",
-                    "title": "猕猴桃的小知识",
-                    "content": "成人每日如果吃两个猕猴桃，就能补充人体每天需要纤维量的……"
-                }],
-                "imgUrl": "null",
-                "name": "天王牌猕猴桃",
-                "doasge": "2500g",
-                "quality": "一等品",
-                "placeName": "四川省彭州市",
-                "archives": "GB/T 31121-2014"
-            },
-            {
-                "sildeMessageList": [{
-                    "imgSrc": "null",
-                    "title": "猕猴桃的小知识",
-                    "content": "成人每日如果吃两个猕猴桃，就能补充人体每天需要纤维量的……"
-                }],
-                "imgUrl": "null",
-                "name": "天王牌猕猴桃",
-                "doasge": "2500g",
-                "quality": "一等品",
-                "placeName": "四川省彭州市",
-                "archives": "GB/T 31121-2014"
-            }
+        'messageValue': [{
+            'sildeMessageList': [{
+                'imgSrc': 'null',
+                'title': '猕猴桃的小知识',
+                'content': '成人每日如果吃两个猕猴桃，就能补充人体每天需要纤维量的……'
+            }],
+            'imgUrl': 'null',
+            'name': '天王牌猕猴桃',
+            'doasge': '2500g',
+            'quality': '一等品',
+            'placeName': '四川省彭州市',
+            'archives': 'GB/T 31121-2014'
+        },
+        {
+            'sildeMessageList': [{
+                'imgSrc': 'null',
+                'title': '猕猴桃的小知识',
+                'content': '成人每日如果吃两个猕猴桃，就能补充人体每天需要纤维量的……'
+            }],
+            'imgUrl': 'null',
+            'name': '天王牌猕猴桃',
+            'doasge': '2500g',
+            'quality': '一等品',
+            'placeName': '四川省彭州市',
+            'archives': 'GB/T 31121-2014'
+        },
+        {
+            'sildeMessageList': [{
+                'imgSrc': 'null',
+                'title': '猕猴桃的小知识',
+                'content': '成人每日如果吃两个猕猴桃，就能补充人体每天需要纤维量的……'
+            }],
+            'imgUrl': 'null',
+            'name': '天王牌猕猴桃',
+            'doasge': '2500g',
+            'quality': '一等品',
+            'placeName': '四川省彭州市',
+            'archives': 'GB/T 31121-2014'
+        },
+        {
+            'sildeMessageList': [{
+                'imgSrc': 'null',
+                'title': '猕猴桃的小知识',
+                'content': '成人每日如果吃两个猕猴桃，就能补充人体每天需要纤维量的……'
+            }],
+            'imgUrl': 'null',
+            'name': '天王牌猕猴桃',
+            'doasge': '2500g',
+            'quality': '一等品',
+            'placeName': '四川省彭州市',
+            'archives': 'GB/T 31121-2014'
+        }
 
         ]
-    }
+    };
 
     vm.messagess = {
         name: '生姜的小知识，你肯定不知道',
         data: ['1.生姜可以增强食欲，驱寒散邪，抗衰老，抗菌，促进头发生长，治疗中暑，治疗晕车晕船，用处非常广泛。用于风寒感冒轻症，可单煎或配红糖、葱白煎服；治风寒感冒重者，以增强发汗解表之力。',
-        '2.生姜治疗胃寒呕吐，配半夏，即小半夏汤；治寒犯中焦之胃脘冷痛、食少、呕吐者，与高良姜、胡椒等温里散寒药配伍；治脾胃虚寒者，与人参、白术等补益脾气药同用；治胃热呕吐者，须与黄连、竹茹等清胃止呕药同用。',
-        '3.生姜止牙痛：取一块姜，切除一小块下来。放入口中。咬在痛牙处，慢慢地你会发现你的牙痛会减轻很多。这时候再出门看医生，也会令自己会舒服很多。']
-    }
+            '2.生姜治疗胃寒呕吐，配半夏，即小半夏汤；治寒犯中焦之胃脘冷痛、食少、呕吐者，与高良姜、胡椒等温里散寒药配伍；治脾胃虚寒者，与人参、白术等补益脾气药同用；治胃热呕吐者，须与黄连、竹茹等清胃止呕药同用。',
+            '3.生姜止牙痛：取一块姜，切除一小块下来。放入口中。咬在痛牙处，慢慢地你会发现你的牙痛会减轻很多。这时候再出门看医生，也会令自己会舒服很多。']
+    };
     $rootScope.items = [];
     vm.viewPicture = viewPicture;
 
     function viewPicture(images) {
         var pullImg = [];
-            if (typeof images === 'string') {
-                pullImg.push(images);
-                images = pullImg;
-            }
+        if (typeof images === 'string') {
+            pullImg.push(images);
+            images = pullImg;
+        }
         $rootScope.items = images.map(function (item) {
             var imgSrc = item + '?size=original';
             if (item instanceof Object) {
@@ -584,11 +584,11 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
     vm.personIcons = {
         '耕地阶段': 'icon-tudi',
         // "播种阶段": 'icon-shengchangqi pro-orange',
-        "土地规划": 'icon-tudi',
-        "生长期": 'icon-shengchangqi pro-orange',
-        "收获期": 'icon-shouhuoqi pro-yellow',
-        "商品期": 'icon-shangpinqi pro-blue',
-        "物流": 'icon-wuliuxinxicopy pro-red'
+        '土地规划': 'icon-tudi',
+        '生长期': 'icon-shengchangqi pro-orange',
+        '收获期': 'icon-shouhuoqi pro-yellow',
+        '商品期': 'icon-shangpinqi pro-blue',
+        '物流': 'icon-wuliuxinxicopy pro-red'
     };
 
 
@@ -600,7 +600,7 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
             angular.element('.anchor-icon').addClass('anchor-icon1');
             angular.element('.anchor-icon .iconfont').removeClass('icon-shouhui').addClass('icon-caidan');
         }
-    }
+    };
     vm.anchorHidden = function (e) {
         var target = e.target;
         if (angular.element(target).hasClass('iconfont icon-caidan') || angular.element(target).hasClass('anchor-icon1')) {
@@ -612,8 +612,8 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
             angular.element('.anchor-icon').addClass('anchor-icon1');
             angular.element('.anchor-list').removeClass('active1');
         }
-        
-    }
+
+    };
 
     vm.itemNum = 0;
     $scope.anchorClick = function (event, item, index) {
@@ -622,7 +622,7 @@ function AppCtrl($scope, $rootScope, $state, dashboardServive, $location, $ancho
         event.preventDefault();
         event.stopPropagation();
 
-    }
+    };
 
     return vm;
 }

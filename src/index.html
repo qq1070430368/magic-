@@ -12,6 +12,9 @@
         <div ui-view></div>
         <!-- 全局加载loading 11-->
         <loading ng-if="loaderLoading"></loading>
+
+        <fm-black-mask ng-if="app.components.maskBlack"></fm-black-mask>
+        <fm-toaster></fm-toaster>
         <!-- 图片预览功能 -->
         <photo-swipe ng-if="items && items.length > 0" photo-items="items"></photo-swipe>
     </div>

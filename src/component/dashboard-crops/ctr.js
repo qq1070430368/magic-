@@ -1,19 +1,41 @@
+import { runInNewContext } from 'vm';
 
 class AppCtrl {
     static get $inject() {
-        return ['$state', '$rootScope', '$scope', '$http', 'dashboardServive', 'cropNavTaskList', '$sce', '$q', '$location', '$anchorScroll'];
+        return ['$state', '$rootScope', '$scope', '$http', 'dashboardServive', 'cropNavTaskList', '$sce', '$q', '$location', '$anchorScroll', 'fmtoast'];
     }
-    constructor($state, $rootScope, $scope, $http, dashboardServive, cropNavTaskList, $sce, $q, $location, $anchorScroll) {
+    constructor($state, $rootScope, $scope, $http, dashboardServive, cropNavTaskList, $sce, $q, $location, $anchorScroll, fmtoast) {
         let vm = this;
+        vm.fmtoast = fmtoast;
+        vm.$rootScope = $rootScope;
+        vm.$scope = $scope;
+        vm.$location = $location;
+        // 控制评级登记
+        vm.flagIndex = {
+            // star1: 0,
+            // start2: 0,
+            // start3: 0
+        };
+        // 存放星评数据
+        vm.flagValue = [];
+        vm.$anchorScroll = $anchorScroll;
+        vm.maskComponent = {
+            MASK: false
+        };
         // vm.meaudropDown = meaudropDown;
         vm.viewMake = true;
+        // 控制评价按钮显示
+        vm.viewShare = true;
         vm.viewBtn = false;
         vm.tabIndex = 0;
+        vm.starIndex = 5; // 默认是5颗星
         vm.meauClip = true;
         vm.noData = false;
-        vm.$location = $location;
-        vm.$anchorScroll = $anchorScroll;
         $rootScope.loaderLoading = true;
+        // $rootScope.app.components.maskBlack = true;
+        // $rootScope.$on('closeMask', (ev, data) => {
+
+        // })
         init();
 
         function init() {
@@ -35,7 +57,36 @@ class AppCtrl {
             console.log(response);
             $rootScope.loaderLoading = false;
             vm.data = response.data;
+            vm.data.starRate = [
+                {
+                    'name': '口感',
+                    'description': '（味道、冷热、软硬评分）',
+                    'value': '5'
+                },
+                {
+                    'name': '外观',
+                    'description': '（形状、色泽、腐烂评分）',
+                    'value': '5'
+                },
+                {
+                    'name': '包装',
+                    'description': '（重量、造型、破损评分）',
+                    'value': '5'
+                }
+            ];
+            vm.data.starRate.map((item, index) => {
+                item.star = [];
+                for (let i = 0; i < vm.starIndex; i++) {
+                    item.star.push({
+                        state: false,
+                        type: `star${index}`
+                    });
+                }
+                return item;
+            });
             vm.noData = false;
+            // 评价星评
+            vm.starRate = vm.data.starRate;
             // 种植百科
             vm.cropIntroduce = $sce.trustAsHtml(vm.data.cropIntroduce);
             // 种植企业信息
@@ -133,7 +184,8 @@ class AppCtrl {
         }
 
         function initPutCode(arr) {
-            if (arr) {
+            vm.codeWolfArr = [];
+            if (arr && arr.length > 0) {
                 arr.map(function (item) {
                     let currentItem = item;
                     item.codeInfo.map(function (data) {
@@ -144,9 +196,11 @@ class AppCtrl {
                     });
                     return item;
                 });
-            }
-            vm.putCodeList = arr.slice(0, 10);
 
+                angular.forEach(arr, (item) => {
+                    item.codeInfo.map((currentItem)=> vm.codeWolfArr.push(currentItem));
+                });
+            }
             return vm.putCodeList;
         }
 
@@ -184,9 +238,10 @@ class AppCtrl {
             decNum: 10,
             sowNum: 10,
             plantNum: 10,
-            putNum: 10
+            putNum: 10,
+            putInNum: 10
         };
-        vm.keyWords = ['land', 'dec', 'sow', 'plant', 'putcode'];
+        vm.keyWords = ['land', 'dec', 'sow', 'plant', 'putcode', 'putIncode'];
         vm.keyWords.map((item) => {
             vm.myFilter[item] = function (data, index) {
                 // 默认显示10条检测数据
@@ -200,16 +255,28 @@ class AppCtrl {
             return item;
         });
 
+        // 评价组件销毁
+        vm.destroy = () => {
+            this.flagIndex = [];
+            this.flagValue = [];
+            this.evaluateData = '';
+        };
+
     }
     meaudropDown(e) {
         this.meauClip = !this.meauClip;
+        if (!this.meauClip) {
+            this.viewShare = false;
+        } else {
+            this.viewShare = true;
+        }
         e.stopPropagation();
     }
     anchorClick(e, $item, $index) {
         this.tabIndex = $index;
         this.$location.hash($item.id);
         // 每次跳转完毕不计入历史记录
-        // $location.replace();
+        this.$location.replace();
         // $anchorScroll.yOffset = 175;
         this.$anchorScroll();
         e.stopPropagation();
@@ -218,6 +285,7 @@ class AppCtrl {
     }
     clickAll() {
         this.meauClip = true;
+        this.viewShare = true;
     }
     dropDown(arrAll, hot) {
         if (!angular.isUndefined(arrAll) && arrAll.length <= 10) {
@@ -234,6 +302,8 @@ class AppCtrl {
             this.changeI = this.initNum.plantNum += this.initNum.init;
         } else if (hot === 'putcode') {
             this.changeI = this.initNum.putNum += this.initNum.init;
+        } else if (hot === 'putIncode') {
+            this.changeI = this.initNum.putInNum += this.initNum.init;
         }
 
         let _this = this;
@@ -252,12 +322,30 @@ class AppCtrl {
         };
 
     }
+    maskComponentOpen(ev) {
+        console.log('open mask components');
+        this.$rootScope.app.components.maskBlack = true;
+        this.maskComponent.MASK = true;
+
+    }
+    saveMaskFun() {
+        // promise.then();
+        this.$rootScope.app.components.maskBlack = false;
+        this.maskComponent.MASK = false;
+        this.fmtoast.pop('提交成功', 1000);
+    }
+    closeMaskFun() {
+        this.$rootScope.app.components.maskBlack = false;
+        this.maskComponent.MASK = false;
+        // 销毁组件
+        this.destroy();
+    }
+    findStarFun(data, index) {
+        this.flagIndex[data.type] = index;
+        this.flagValue = this.flagIndex;
+    }
 }
 
-// function AppCtrl(){
-//     console.log('appCtrl')
-// }
-// module.exports  = AppCtrl;
 export {
     AppCtrl
 };

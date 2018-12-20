@@ -10,13 +10,53 @@
                         ">{{item.name}}</a> 
                  </li>
             </ul>
-            <span class="anchor-icon anchor-icon1" ng-click="$ctrl.meaudropDown($event)">
+            <span class="
+                        anchor-icon anchor-icon1" ng-click="$ctrl.meaudropDown($event)">
                         <i class="iconfont " ng-class="{true: 'icon-caidan', false: 'icon-shouhui'}[$ctrl.meauClip]"></i>
                         </span>
         </div>
+
+        <div class="anchor evaluate-static" id="navbar-example" ng-if="!loaderLoading && !$ctrl.noData && $ctrl.viewShare">
+            <span class="anchor-icon anchor-icon1" ng-click="$ctrl.maskComponentOpen($event)">
+                <i class="iconfont icon-kehudianping"></i>
+            </span>
+        </div>
+
         <!-- <no-barcode ng-if="!$ctrl.data"></no-barcode> -->
         <div class="prod-content dashboard-cropfile" ng-if="!loaderLoading && $ctrl.data">
+            <!-- // 评论组件 -->
+            <div class="mask-component-evaluate" ng-if="$ctrl.maskComponent.MASK">
+                <div class="mask-title">
+                    <i class="icon iconfont-cha"></i>
+                    <span> &nbsp评 价 &nbsp</span>
+                </div>
+                <div class="mask-conf">
+                    <!-- 星评 -->
+                    <div class="starRating">
+                        <!-- {{$ctrl.starRate}} -->
+                        <div class="starRating-item  bg-white margin-top-10" ng-repeat="item in $ctrl.starRate">
+                            <strong>{{item.name}}</strong>
+                            <div class="fs-14">
+                                <i class="iconfont icon-StarCopy" ng-repeat="data in item.star" ng-click="$ctrl.findStarFun(data, $index+1)"
+                                    ng-class="{'pro-yellow': $ctrl.flagIndex[data.type] >= $index+1}"></i>
+                            </div>
+                            <span class="fs-10">{{item.description}}</span>
+                        </div>
+                    </div>
 
+                    <!-- // 评价内容 -->
+                    <div class="mask-component-con">
+                        <span>请输入评价内容</span>
+                        <textarea name="" id="" cols="30" rows="5" maxlength='100' placeholder="最多输入100个字" ng-model="$ctrl.evaluateData"></textarea>
+                    </div>
+                </div>
+                <div class="mask-btnArea">
+                    <div class="btnGroup">
+                        <a class="sgBtn mask-cancel" ng-click="$ctrl.closeMaskFun()">取消</a>
+                        <a class="sgBtn mask-ok" ng-click="$ctrl.saveMaskFun()">提交</a>
+                    </div>
+                </div>
+            </div>
             <!-- 作物百科介绍 -->
             <div class="shuffling">
                 <div class="include-dashboard" ng-repeat="item in $ctrl.cropNavTaskList track by $index">
@@ -490,7 +530,7 @@
             <no-data text-str="暂无种植信息" data="$ctrl.plantProduce.smooththingsData" class="smooththingsData-margin"></no-data>
             <div class="introduce-con">
                 <div class="smooththings-items" ng-if="$ctrl.plantProduce.smooththingsData">
-                    <div class="smooththings-items-list margin-top-10" ng-repeat="item in $ctrl.plantProduce.smooththingsData track by $index"
+                    <div class="smooththings-items-list margin-top-10" ng-repeat="item in $ctrl.plantProduce.smooththingsData | limitTo: 4 track by $index"
                         ng-class="{'smooththings-bottom': !$last}">
                         <div>{{item.landLevelings.name}} &nbsp
                         </div>
@@ -560,7 +600,7 @@
             <div class="introduce-con">
                 <div class="smooththings-items padding-top-10">
                     <div class="laboratory-container-dashboard" ng-if="$ctrl.laboratoryData">
-                        <div class="laboratory-items crops-cl" ng-repeat="item in $ctrl.laboratoryData">
+                        <div class="laboratory-items crops-cl" ng-repeat="item in $ctrl.laboratoryData | limitTo : 1 ">
                             <div>
                                 <span>{{item.landName}}</span>
                                 <span>{{item.responsibleName}}</span>
@@ -604,12 +644,12 @@
 
                                     
                                 </table>
-                                <div class="load-mores bg-white" ng-click="$ctrl.dropDown(item.detectionInfo, 'dec')" ng-if="item.detectionInfo.length > 10 && !$ctrl.noMore['dec']">
+                                <div class="load-mores bg-white" ng-click="$ctrl.dropDown(item.detectionInfo, 'dec')" ng-if="item.detectionInfo.length > 10 && !$ctrl.noMore['dec'] && $first">
                                     
                                     <span>查看更多</span>
                                 </div>
 
-                                <div class="load-mores bg-white" ng-click="$ctrl.dropDowns(item.projectData, 'dec')" ng-if="$ctrl.noMore['dec']">
+                                <div class="load-mores bg-white" ng-click="$ctrl.dropDowns(item.projectData, 'dec')" ng-if="$ctrl.noMore['dec'] && $first">
                                     <!-- <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDowns()"></i> -->
                                     <span>暂无更多数据</span>
                                      <!-- <button><可收回</button> -->
@@ -700,8 +740,8 @@
                 <!-- ng-bind="html" -->
                 <div class="commodity-list" ng-if="$ctrl.putCodeList">
                     <!-- <span>{{item.info}}</span> -->
-                    <ul class="commodity-list-img margin-top-5" ng-repeat="code in $ctrl.putCodeList | limitTo: 3 track by $index">
-                        <li class="col-md-2 col-xs-2 padding-0" ng-repeat="item in code.codeInfo | limitTo: 4 track by $index">
+                    <ul class="commodity-list-img margin-top-5">
+                        <li class="col-md-2 col-xs-2 padding-0" ng-repeat="item in $ctrl.codeWolfArr | filter: $ctrl.myFilter['putIncode']">
                             <!-- <img ng-src="{{item}}" alt="" class="brand-crops-text " ng-click="$ctrl.viewPicture($ctrl.putCode, $event)"
                             err-src="images/jiang_img/1.png"> -->
                             <div class="qccode-container" >
@@ -720,6 +760,13 @@
     
                                 </div>
                             </div>
+                        </li>
+                        <li class="load-mores bg-white put-code-with" style="width: 100%" ng-click="$ctrl.dropDown($ctrl.codeWolfArr, 'putIncode')" ng-if="$ctrl.codeWolfArr.length > 10 && !$ctrl.noMore['putIncode']">
+                            <span>查看更多</span>
+                        </li>
+                        <li class="load-mores bg-white put-code-with" style="width: 100%"  ng-if="$ctrl.noMore['putIncode']">
+                            <!-- <i class="iconfont icon-sanjiao pro-yellow" ng-click="$ctrl.dropDowns()"></i> -->
+                            <span>暂无更多数据</span>
                         </li>
                     </ul>
                 </div>

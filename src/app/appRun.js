@@ -6,6 +6,9 @@ function appRun($rootScope, $state) {
         description: 'FMBIZ', // brief description
         version: '1.0.0', // current version
         date: new Date(),
+        components: {
+            maskBlack: false
+        },
         year: ((new Date()).getFullYear()), // automatic current year (for copyright information)
         isMobile: (function () { // true if the browser is a mobile device
             var check = false;
@@ -16,9 +19,18 @@ function appRun($rootScope, $state) {
         })(),
     };
 
-    $rootScope.$on('$stateChangeStart', (event, toState)=> {
+    $rootScope.$on('$stateChangeStart', (event, toState) => {
         // index ，默认等于跳转的title
         $rootScope.app.name = toState.title;
+    });
+
+    $rootScope.$watch('app.components.maskBlack', (data) => {
+        if (data) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
     });
 
     // window
