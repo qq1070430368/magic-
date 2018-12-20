@@ -5,9 +5,10 @@ export default
 angular.module('fmDashboardGoods', [echartsSeror])
     .constant('goodsNavTaskList', goodsNavTaskList())
     .filter('isNull', isNull)
-    // .factory('dashboardCropServive', ['$http', '$q', ($http, $q) => new XhrFactory($http, $q)])
     .controller('dashboard_goods', AppCtrl)
     .name;
+
+
 
 
 

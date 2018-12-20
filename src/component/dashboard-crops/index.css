@@ -45,8 +45,11 @@
   font-weight: 600;
   text-align: right;
   display: inline-block;
-  width: 70px;
+  width: 65px;
   font-size: 12px;
+}
+.crop-introduce-container .introduce-con p label {
+  display: inline;
 }
 .crop-introduce-container .slideCenter .slideListImg {
   display: flex;
@@ -296,11 +299,14 @@
 .commodity-list-img {
   overflow: hidden;
 }
+.commodity-list .put-code-with span {
+  border: none;
+}
 .qcode-style img {
   display: inline-block;
   text-align: center;
-  margin-right: 33px;
-  margin-top: -15px;
+  margin-right: 35px;
+  margin-top: -3px;
 }
 .qrcode-make {
   display: flex;
@@ -324,8 +330,8 @@
 }
 .commodity-list-img .qccode-container .qcode-style {
   position: absolute;
-  top: 22px;
-  right: -25px;
+  top: 16px;
+  right: -31px;
 }
 .commodity-list-img .qccode-container .qcode-style img {
   width: 55px;
@@ -1025,4 +1031,130 @@
 .smooththingsData-margin .mainpage-wu {
   margin-top: 8px;
   box-shadow: none;
+}
+.dashboardCrops-file .mask-component-evaluate {
+  position: fixed;
+  top: 50%;
+  left: 40px;
+  right: 40px;
+  background-color: #fff;
+  z-index: 2147000001;
+  margin-top: -170px;
+  border-radius: 5px;
+  font-weight: 700;
+  color: #535e66;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-title {
+  height: 22px;
+  line-height: 29px;
+  padding: 14px 30px;
+  border-bottom: solid 1px #eef0f1;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-title span {
+  font-size: 14px;
+  display: block;
+  float: left;
+  height: 20px;
+  position: relative;
+  background: #fff;
+  color: #ffa600;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-title a {
+  display: block;
+  cursor: pointer;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  top: 22px;
+  right: 30px;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-conf {
+  margin: 5px 0;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-conf .starRating-item {
+  display: inherit;
+  padding: 0px;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-conf .starRating-item-flex {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-conf strong {
+  display: block;
+  text-align: center;
+  padding: 0 0 0 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-conf p {
+  height: 84px;
+  margin-top: 16px;
+  line-height: 26px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-conf i {
+  margin-left: 10px;
+  font-size: 22px;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-conf .mask-component-con {
+  padding: 0 15px;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-conf .mask-component-con span {
+  display: block;
+  font-size: 12px;
+  color: #ffa600;
+  /* padding-left: 13px; */
+  padding: 9px 3px 13px 0;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-conf .mask-component-con textarea {
+  width: 100%;
+  line-height: 17px;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-conf .mask-component-con textarea:focus {
+  outline: none !important;
+  border-color: #719ECE;
+  box-shadow: 0 0 8px #719ECE;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-btnArea {
+  border-top: solid 1px #eef0f1;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-btnArea .btnGroup {
+  float: right;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-btnArea .btnGroup .sgBtn {
+  display: block;
+  cursor: pointer;
+  float: left;
+  width: 70px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  margin: 8px 14px;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-btnArea .btnGroup .mask-ok {
+  background-color: #0095d9;
+  color: #fff;
+}
+.dashboardCrops-file .mask-component-evaluate .mask-btnArea .btnGroup .mask-cancel {
+  background-color: #546a79;
+  margin: 8px 0;
+}
+@media screen and (max-width: 375px) {
+  .dashboardCrops-file .mask-component-evaluate {
+    left: 25px;
+    right: 25px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .dashboardCrops-file .mask-component-evaluate {
+    left: 10px;
+    right: 10px;
+  }
 }

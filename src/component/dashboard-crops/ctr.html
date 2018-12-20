@@ -36,7 +36,7 @@
                         <!-- {{$ctrl.starRate}} -->
                         <div class="starRating-item  bg-white margin-top-10" ng-repeat="item in $ctrl.starRate">
                             <strong>{{item.name}}</strong>
-                            <div class="fs-14">
+                            <div class="fs-14 starRating-item-flex">
                                 <i class="iconfont icon-StarCopy" ng-repeat="data in item.star" ng-click="$ctrl.findStarFun(data, $index+1)"
                                     ng-class="{'pro-yellow': $ctrl.flagIndex[data.type] >= $index+1}"></i>
                             </div>
