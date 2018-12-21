@@ -2,9 +2,9 @@ import { runInNewContext } from 'vm';
 
 class AppCtrl {
     static get $inject() {
-        return ['$state', '$rootScope', '$scope', '$http', 'dashboardServive', 'cropNavTaskList', '$sce', '$q', '$location', '$anchorScroll', 'fmtoast'];
+        return ['$state', '$rootScope', '$scope', '$http', 'dashboardServive', 'cropNavTaskList', '$sce', '$q', '$location', '$anchorScroll', 'fmtoast', 'dashboardCommitHttp'];
     }
-    constructor($state, $rootScope, $scope, $http, dashboardServive, cropNavTaskList, $sce, $q, $location, $anchorScroll, fmtoast) {
+    constructor($state, $rootScope, $scope, $http, dashboardServive, cropNavTaskList, $sce, $q, $location, $anchorScroll, fmtoast, dashboardCommitHttp) {
         let vm = this;
         vm.fmtoast = fmtoast;
         vm.$rootScope = $rootScope;
@@ -59,20 +59,10 @@ class AppCtrl {
             vm.data = response.data;
             vm.data.starRate = [
                 {
-                    'name': '口感',
-                    'description': '（味道、冷热、软硬评分）',
+                    'name': '商品评分',
+                    'description': '',
                     'value': '5'
                 },
-                {
-                    'name': '外观',
-                    'description': '（形状、色泽、腐烂评分）',
-                    'value': '5'
-                },
-                {
-                    'name': '包装',
-                    'description': '（重量、造型、破损评分）',
-                    'value': '5'
-                }
             ];
             vm.data.starRate.map((item, index) => {
                 item.star = [];
